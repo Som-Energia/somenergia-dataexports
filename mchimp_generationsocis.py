@@ -7,7 +7,7 @@ import codecs
 import sys
 import argparse
 
-O = ooop.OOOP(**dbconfig(profile='local'))
+O = ooop.OOOP(**dbconfig(profile='prod'))
 
 soci_ids = O.ResPartner.search(
     [('category_id','=','Soci')
@@ -26,6 +26,8 @@ with codecs.open(sys.argv[1],'w', 'utf8') as output:
         ])
 
     for i,soci_id in enumerate(soci_ids):
+        if not i%1 : sys.stdout.write('.'), ; sys.stdout.flush()
+
         soci = O.ResPartner.get(soci_id)
         contractes = O.GiscedataPolissa.search(
             [
@@ -49,9 +51,9 @@ with codecs.open(sys.argv[1],'w', 'utf8') as output:
                     contractes, ['name','cups','cups_direccio'])
                 )
             ]
-        if not i%10 : print ".", ; sys.stdout.flush()
         if not len(consums) :
             print >> sys.stderr, soci_id, "Sin contratos"
+            continue
 
         shareUse = 170
         recommendedProportion = .70
@@ -60,8 +62,9 @@ with codecs.open(sys.argv[1],'w', 'utf8') as output:
         totalUse = sum((contract['annual_use_kwh'] for contract in consums))
         recommendedInvestment = ((totalUse*recommendedProportion)//shareUse)*shareCost
 
-        if totalUse < 5 :
+        if totalUse < 1 :
             print >> sys.stderr, soci_id, "Sin consumo"
+            continue
 
         print >> output, u'\t'.join(unicode(x).replace('\t',' ') for x in [
             soci_id,
