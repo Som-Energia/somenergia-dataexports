@@ -6,12 +6,16 @@ from dbconfig import dbconfig
 import codecs
 import sys
 import argparse
+from consolemsg import step, error, fail, warn
 
 O = ooop.OOOP(**dbconfig(profile='prod'))
 
 soci_ids = O.ResPartner.search(
     [('category_id','=','Soci')
     ])
+
+
+
 
 with codecs.open(sys.argv[1],'w', 'utf8') as output:
     print >> output, u'\t'.join(unicode(x) for x in [
@@ -20,13 +24,16 @@ with codecs.open(sys.argv[1],'w', 'utf8') as output:
         'Call name',
         'E-mail',
         'Language',
+        'Legal entity',
         'Contracts',
         'Anual use',
+        'Recommended shares',
+        'Covered use',
         'Recommended investment',
         ])
 
     for i,soci_id in enumerate(soci_ids):
-        if not i%1 : sys.stdout.write('.'), ; sys.stdout.flush()
+        step("Soci {}...".format(soci_id))
 
         soci = O.ResPartner.get(soci_id)
         contractes = O.GiscedataPolissa.search(
@@ -52,18 +59,26 @@ with codecs.open(sys.argv[1],'w', 'utf8') as output:
                 )
             ]
         if not len(consums) :
-            print >> sys.stderr, soci_id, "Sin contratos"
+            error("El soci {} no te contractes".format(soci_id))
+            continue
+
+        if any('annual_use_kwh' not in contract for contract in consums) :
+            warn("El soci {} te un contracte sense consum anual calculat".format(soci_id))
             continue
 
         shareUse = 170
-        recommendedProportion = .70
+        recommendedPercent = 70
         shareCost = 100
 
-        totalUse = sum((contract['annual_use_kwh'] for contract in consums))
-        recommendedInvestment = ((totalUse*recommendedProportion)//shareUse)*shareCost
+        def ambPuntDeMilers(numero) :
+            return '{:,}'.format(numero).replace(',','.')
 
-        if totalUse < 1 :
-            print >> sys.stderr, soci_id, "Sin consumo"
+        totalUse = sum((contract.get('annual_use_kwh',0) for contract in consums))
+        recommendedShares = (totalUse*recommendedPercent/100) // shareUse
+        recommendedInvestment = recommendedShares * shareCost
+
+        if totalUse < shareUse :
+            error("El soci {} no te prou consum ({})".format(soci_id, totalUse))
             continue
 
         print >> output, u'\t'.join(unicode(x).replace('\t',' ') for x in [
@@ -72,9 +87,12 @@ with codecs.open(sys.argv[1],'w', 'utf8') as output:
             soci.name.split(',')[-1].strip(),
             soci.address[0].email,
             soci.lang,
+            1 if soci.vat[2] in "ABCDEFGHJNPQRSUVW" else 0,
             len(consums),
-            totalUse,
-            recommendedInvestment,
+            ambPuntDeMilers(totalUse),
+            ambPuntDeMilers(recommendedShares),
+            ambPuntDeMilers(recommendedShares * shareUse),
+            ambPuntDeMilers(recommendedInvestment),
             ])
 
 
