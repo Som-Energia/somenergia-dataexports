@@ -22,6 +22,8 @@ with codecs.open(sys.argv[1],'w', 'utf8') as output:
         'ID',
         'Name',
         'Call name',
+        'Soci',
+        'DNI',
         'E-mail',
         'Language',
         'Legal entity',
@@ -82,10 +84,15 @@ with codecs.open(sys.argv[1],'w', 'utf8') as output:
                 error("El soci {} no te prou consum ({})".format(soci_id, totalUse))
                 continue
 
+            if soci.vat[:2] != 'ES':
+                warn("Soci amb un VAT code no espanyol: {}".format(soci.vat[:2]))
+
             print >> output, u'\t'.join(unicode(x).replace('\t',' ') for x in [
                 soci_id,
                 soci.name,
                 soci.name.split(',')[-1].strip(),
+                soci.ref[1:].lstrip('0'),
+                soci.vat[2:],
                 soci.address[0].email,
                 soci.lang,
                 1 if soci.vat[2] in "ABCDEFGHJNPQRSUVW" else 0,
