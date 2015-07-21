@@ -2,13 +2,14 @@
 #-*- coding: utf8 -*-
 
 import ooop
-from dbconfig import dbconfig
 import codecs
 import sys
 import argparse
 from consolemsg import step, error, fail, warn
 
-O = ooop.OOOP(**dbconfig(profile='prod'))
+import config
+
+O = ooop.OOOP(**config.ooop)
 
 soci_ids = O.ResPartner.search(
     [('category_id','=','Soci')
