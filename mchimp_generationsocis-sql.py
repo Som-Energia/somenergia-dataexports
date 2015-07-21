@@ -8,7 +8,7 @@ import codecs
 import sys
 
 def esPersonaFisica(soci) :
-    return 1 if soci.vat[2] in "ABCDEFGHJNPQRSUVW" else 0
+    return 0 if soci.nif[2] in "ABCDEFGHJNPQRSUVW" else 1
 
 def ambPuntDeMilers(numero) :
     return '{:,}'.format(numero).replace(',','.')
@@ -88,6 +88,7 @@ with db.cursor() as cursor :
                     .replace('\r',' ')
                 for x in [
             line.name,
+            line.name.split(',')[-1].strip() if esPersonaFisica(line) else '',
             line.nsoci,
             line.nif,
             line.lang,
