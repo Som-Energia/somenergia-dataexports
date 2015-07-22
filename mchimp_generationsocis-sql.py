@@ -6,6 +6,7 @@ import config
 import dbutils
 import codecs
 import sys
+from consolemsg import step, error, fail, warn
 
 def esPersonaFisica(soci) :
     return 0 if soci.nif[2] in "ABCDEFGHJNPQRSUVW" else 1
@@ -17,7 +18,9 @@ def ambPuntDeMilers(numero) :
 db = psycopg2.connect(**config.psycopg)
 with db.cursor() as cursor :
     cursor.execute("""\
+        SELECT * FROM (
         SELECT DISTINCT ON (sub.soci_id)
+            sub.soci_id as soci_id,
             sub.name AS name,
             sub.nsoci AS nsoci,
             sub.nif AS nif,
@@ -57,7 +60,7 @@ with db.cursor() as cursor :
             GROUP BY
                 soci.id
             ORDER BY
-                soci.id
+                soci.id ASC
         ) AS sub
         LEFT JOIN
             res_partner_address AS address ON (address.partner_id = sub.soci_id)
@@ -76,42 +79,83 @@ with db.cursor() as cursor :
             sub.ncontractes,
             address.email,
             TRUE
+        ) as result
+        ORDER BY
+            result.name ASC
             
     ;
 """)
 
+    shareUse = 170
+    recommendedPercent = 70
+    shareCost = 100
+
+    print u'\t'.join(unicode(x) for x in [
+        'ID',
+        'Name',
+        'Call name',
+        'Soci',
+        'NIF',
+        'E-mail',
+        'Language',
+        'Legal entity',
+        'Contracts',
+        'Anual use',
+        'Recommended shares',
+        'Covered use',
+        'Recommended investment',
+        ])
+
+
     for line in dbutils.fetchNs(cursor) :
-        print '\t'.join(
-                str(x)
-                    .replace('\t',' ')
-                    .replace('\n',' ')
-                    .replace('\r',' ')
-                for x in [
-            line.name,
-            line.name.split(',')[-1].strip() if esPersonaFisica(line) else '',
-            line.nsoci,
-            line.nif,
-            line.lang,
-            line.consumannual,
-            line.ncontractes,
-            line.email,
+        try:
 
-#            soci.name,
-#            soci.name.split(',')[-1].strip(),
-#            soci.ref[1:].lstrip('0'),
-#            soci.vat[2:],
-#            soci.address[0].email,
-#            soci.lang,
-#            1 if soci.vat[2] in "ABCDEFGHJNPQRSUVW" else 0,
-#            len(consums),
-#            ambPuntDeMilers(totalUse),
-#            ambPuntDeMilers(recommendedShares),
-#            ambPuntDeMilers(recommendedShares * shareUse),
-#            ambPuntDeMilers(recommendedInvestment),
-            ])
+            totalUse = line.consumannual
+            if totalUse is None:
+                warn("Soci {} amb consum null".format(
+                    line.nsoci))
+                continue
 
-#    csv = dbutils.csvTable(cursor)
-#    print csv
+            if totalUse < shareUse :
+                error("El soci {} no te prou consum ({})".format(line.nsoci, totalUse))
+                continue
+
+            if line.nif[:2] != 'ES':
+                warn("Soci amb un VAT code no espanyol: {}".format(line.nif[:2]))
+
+            recommendedShares = (totalUse*recommendedPercent/100) // shareUse
+            recommendedInvestment = recommendedShares * shareCost
+
+                    
+            print '\t'.join(
+                    str(x)
+                        .replace('\t',' ')
+                        .replace('\n',' ')
+                        .replace('\r',' ')
+                    for x in [
+                line.soci_id,
+                line.name,
+                line.name.split(',')[-1].strip() if esPersonaFisica(line) else '',
+                line.nsoci[1:].lstrip('0'),
+                line.nif[2:],
+                line.email,
+                line.lang,
+                0 if esPersonaFisica(line) else 1,
+                line.ncontractes,
+                ambPuntDeMilers(totalUse),
+                ambPuntDeMilers(recommendedShares),
+                ambPuntDeMilers(recommendedShares * shareUse),
+                ambPuntDeMilers(recommendedInvestment),
+                ])
+        except Exception as e:
+            import traceback
+            error("Error processant soci {}\n{}\n{}".format(
+                line.nsoci,
+                e,
+                "\n".join(traceback.format_stack()),
+                )) 
+
+
 
 
 
