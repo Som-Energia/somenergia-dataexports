@@ -27,7 +27,10 @@ SELECT pc.name AS categoria,
        com.name AS comarca,
        ccaa.name AS comunitat_autonoma,
        pa.id AS soci_id,
-       m.id AS id_municipi
+       m.id AS id_municipi,
+       m.ine AS codi_ine,
+       prov.code AS codi_provincia,
+       ccaa.codi AS codi_ccaa
 FROM res_partner_address AS pa
 LEFT JOIN res_partner AS p ON (p.id=pa.partner_id)
 LEFT JOIN res_partner_category_rel AS p__c ON (pa.partner_id=p__c.partner_id)
@@ -47,20 +50,27 @@ db = psycopg2.connect(**config.psycopg)
 with db.cursor() as cursor :
     cursor.execute("""\
 SELECT
-    municipi,
-    provincia,
+    codi_ccaa,
     comunitat_autonoma,
+    codi_provincia,
+    provincia,
+    codi_ine,
+    municipi,
     COUNT(soci_id) AS quants
 FROM ("""+subquerySocis+""") AS detall
 GROUP BY
+    codi_ccaa,
+    codi_provincia,
+    codi_ine,
     provincia,
     municipi,
-    comunitat_autonoma
+    comunitat_autonoma,
+    TRUE
 ORDER BY
     comunitat_autonoma ASC,
     provincia ASC,
     municipi ASC,
-    true ASC
+    TRUE ASC
 """)
 
     print dbutils.csvTable(cursor)
