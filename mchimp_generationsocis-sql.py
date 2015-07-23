@@ -51,7 +51,6 @@ with db.cursor() as cursor :
                 res_partner_category_rel AS cat ON cat.partner_id = soci.id
             WHERE
                 cat.category_id = 8 AND
-/*                soci.id < 1000 AND */
                 soci.active AND
                 pol.active AND
                 pol.state = 'activa' AND
@@ -116,7 +115,7 @@ with db.cursor() as cursor :
                     line.nsoci))
                 continue
 
-            if totalUse < shareUse :
+            if totalUse * recommendedPercent < shareUse * 100 :
                 error("El soci {} no te prou consum ({})".format(line.nsoci, totalUse))
                 continue
 
