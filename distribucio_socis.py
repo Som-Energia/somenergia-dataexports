@@ -4,15 +4,8 @@
 import psycopg2
 import config
 import dbutils
-import codecs
 import sys
 from consolemsg import step, error, fail, warn
-
-def esPersonaFisica(soci) :
-    return 0 if soci.nif[2] in "ABCDEFGHJNPQRSUVW" else 1
-
-def ambPuntDeMilers(numero) :
-    return '{:,}'.format(numero).replace(',','.')
 
 subquerySocis = """\
 SELECT pc.name AS categoria,
