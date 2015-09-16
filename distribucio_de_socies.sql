@@ -95,7 +95,8 @@ SELECT
     comarca AS nombre,
     count(comarca) AS recuento
 FROM(
-	SELECT adreces.id, 
+	SELECT
+        adreces.id, 
 		adreces.partner_id, 
 		municipi.name AS municipi, 
 		comarca.name AS comarca,
@@ -161,4 +162,5 @@ FROM(
 		AND pais.name != 'España'
 		) as taula_pais
 GROUP BY pais
-ORDER BY pais)
+ORDER BY pais
+)
