@@ -1,4 +1,4 @@
-﻿(SELECT provincia AS nombre, count(provincia)  AS recuento
+(SELECT provincia AS nombre, count(provincia)  AS recuento
 FROM(
 	SELECT adreces.id, 
 		adreces.partner_id, 
