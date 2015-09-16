@@ -3,9 +3,7 @@
 
 import psycopg2
 import config
-import dbutils
 import sys
-from consolemsg import step, error, fail, warn
 
 
 subquerySocis = """\
@@ -96,6 +94,7 @@ ORDER BY
 
 
 if __name__ == '__main__':
+    import dbutils
     print distribucioSocies(date=sys.argv[1], dbhandler=dbutils.csvTable)
 
 

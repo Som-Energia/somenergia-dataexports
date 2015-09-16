@@ -45,8 +45,10 @@ def renderMap(filename, data):
     with open("MapaSocios-template.svg") as svgTemplateFile:
         svgTemplate = svgTemplateFile.read()
 
-    with open(filename,'w') as svgAbsolut:
-        svgAbsolut.write(svgTemplate.format(**output))
+    svgcontent = svgTemplate.format(**output)
+
+    with open(filename+'.svg','w') as svgAbsolut:
+        svgAbsolut.write(svgcontent)
 
 
 with open('scale.csv') as scalecsv:
@@ -97,7 +99,7 @@ for ccaa, population in populationPerCCAA.items():
     output['number_'+ccaa] = socis
     output['percent_'+ccaa] = '{:.2f}%'.format(socis*100./totalSocis)
     output['color_'+ccaa] = mapColor(socis, minSocis, maxSocis)
-renderMap('SocisPerCCAA-absoluts.svg', output)
+renderMap('SocisPerCCAA-absoluts', output)
 
 step("Generant mapa amb valors relatius")
 
@@ -110,7 +112,7 @@ for ccaa, population in populationPerCCAA.items():
     output['color_'+ccaa] = mapColor(
         relativeSoci, minRelativeSocis, maxRelativeSocis)
     output['percent_'+ccaa] = ''
-renderMap('SocisPerCCAA-relatius.svg', output)
+renderMap('SocisPerCCAA-relatius', output)
 
  
 
