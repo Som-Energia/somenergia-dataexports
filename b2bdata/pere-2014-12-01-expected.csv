@@ -1,0 +1,84 @@
+[34;1m:: Loading distribucio_de_socies.sql...[0m
+[34;1m:: Connecting to the database...[0m
+tipus	nombre	recuento
+PROVINCE	Almería	44
+PROVINCE	Cádiz	44
+PROVINCE	Córdoba	86
+PROVINCE	Granada	87
+PROVINCE	Huelva	16
+PROVINCE	Jaen	11
+PROVINCE	Málaga	56
+PROVINCE	Sevilla	130
+PROVINCE	Huesca	98
+PROVINCE	Teruel	25
+PROVINCE	Zaragoza	431
+PROVINCE	Asturias	66
+PROVINCE	Balears, Illes	959
+PROVINCE	Las Palmas	29
+PROVINCE	Santa Cruz de Tenerife	24
+PROVINCE	Cantabria	53
+PROVINCE	Albacete	54
+PROVINCE	Ciudad Real	25
+PROVINCE	Cuenca	33
+PROVINCE	Guadalajara	39
+PROVINCE	Toledo	60
+PROVINCE	Avila	20
+PROVINCE	Burgos	62
+PROVINCE	León	32
+PROVINCE	Palencia	15
+PROVINCE	Salamanca	29
+PROVINCE	Segovia	12
+PROVINCE	Soria	14
+PROVINCE	Valladolid	55
+PROVINCE	Zamora	5
+PROVINCE	Barcelona	7921
+PROVINCE	Girona	1263
+PROVINCE	Lleida	448
+PROVINCE	Tarragona	553
+PROVINCE	Alacant	263
+PROVINCE	Castelló	198
+PROVINCE	València	987
+PROVINCE	Badajoz	37
+PROVINCE	Cáceres	19
+PROVINCE	A Coruña	127
+PROVINCE	Lugo	29
+PROVINCE	Ourense	12
+PROVINCE	Pontevedra	67
+PROVINCE	Madrid	1447
+PROVINCE	Melilla	1
+PROVINCE	Murcia	130
+PROVINCE	Navarra	558
+PROVINCE	Araba	49
+PROVINCE	Bizkaia	190
+PROVINCE	Gipuzkoa	78
+PROVINCE	La Rioja	139
+PROVINCE	Regne Unit	1
+PROVINCE	None	0
+STATE	Andalucia	474
+STATE	Aragón	554
+STATE	Asturias, Principado de	66
+STATE	Baleares, Islas	959
+STATE	Canarias	53
+STATE	Cantabria	53
+STATE	Castilla - La Mancha	211
+STATE	Castilla y León	244
+STATE	Cataluña	10185
+STATE	Comunidad Valenciana	1448
+STATE	Extremadura	56
+STATE	Galicia	235
+STATE	Madrid, Comunidad de	1447
+STATE	Melilla	1
+STATE	Murcia, Región de	130
+STATE	Navarra, Comunidad Foral de	558
+STATE	País Vasco	317
+STATE	Rioja, La	139
+STATE	None	0
+COUNTY	Mallorca	761
+COUNTY	Menorca	130
+COUNTY	Pitiüses	68
+COUNTRY	France	1
+COUNTRY	Germany	2
+COUNTRY	Italy	1
+COUNTRY	Netherlands	3
+COUNTRY	Portugal	1
+COUNTRY	United Kingdom	1
