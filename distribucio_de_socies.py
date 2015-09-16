@@ -7,6 +7,7 @@ import dbutils
 import sys
 from consolemsg import step, error, fail, warn
 
+
 subquerySocis = """\
 SELECT
     pc.name AS categoria,
@@ -48,17 +49,18 @@ LEFT JOIN res_comarca AS com ON (com.id=m.comarca)
 LEFT JOIN res_country AS country ON (country.id=pa.country_id)
 WHERE
     pa.active AND
-    pa.create_date < %(data)s AND
+    pa.create_date < %(date)s AND
     p__c.category_id IS NOT NULL AND
     p__c.category_id = (SELECT id FROM res_partner_category WHERE name='Soci')
 ORDER BY p.ref
 """
 
+def distribucioSocies(date, dbhandler):
 
 
-db = psycopg2.connect(**config.psycopg)
-with db.cursor() as cursor :
-    cursor.execute("""\
+    db = psycopg2.connect(**config.psycopg)
+    with db.cursor() as cursor :
+        cursor.execute("""\
 SELECT
     codi_pais,
     pais,
@@ -87,12 +89,14 @@ ORDER BY
     municipi ASC,
     TRUE ASC
 """, dict(
-        data=sys.argv[1],
+        date=date,
         ))
 
-    print dbutils.csvTable(cursor)
+        return dbhandler(cursor)
 
 
+if __name__ == '__main__':
+    print distribucioSocies(date=sys.argv[1], dbhandler=dbutils.csvTable)
 
 
 
