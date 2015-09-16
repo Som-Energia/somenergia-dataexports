@@ -23,8 +23,9 @@ def main():
         args.append(arg)
 
     if not args:
-        fail()
-    warn(cliargs.dump())
+        fail("Argument required. Usage:\n"
+        "{} <sqlfile> [<yamlfile>] [--<var1> <value1> [--<var2> <value2> ..]".format(sys.argv[0]))
+
     step("Loading {}...".format(args[0]))
     with open(args[0]) as sqlfile:
         query = sqlfile.read()
@@ -40,7 +41,11 @@ def main():
     db = psycopg2.connect(**config.psycopg)
 
     with db.cursor() as cursor :
-        cursor.execute(query, variables)
+        try:
+            cursor.execute(query, variables)
+        except KeyError as e:
+            fail("Missing variable '{key}'. Specify it in the YAML file or by using the --{key} option"
+                .format(key=e.args[0]))
         print dbutils.csvTable(cursor)
 
 
