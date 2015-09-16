@@ -49,6 +49,9 @@ def renderMap(filename, data):
         svgAbsolut.write(svgTemplate.format(**output))
 
 
+with open('scale.csv') as scalecsv:
+    colors = [ color.strip() for color in scalecsv ]
+
 populationPerCCAA = dict(
     (line.code, int(line.population_2014_01))
     for line in readCsvNs('poblacio_ccaa.csv')
@@ -59,6 +62,7 @@ distribucioSocis = readCsvNs("distribucio.csv")
 socisPerCCAA = countBy('codi_ccaa', distribucioSocis, noneValue='00')
 socisPerProvincia = countBy('codi_provincia', distribucioSocis, noneValue='00')
 socisPerMunicipi = countBy('codi_ine', distribucioSocis, noneValue='00000')
+socisPerPais = countBy('codi_pais', distribucioSocis, noneValue='00')
 
 relativeSocisPerCCAA = dict(
     (ccaa, socis*10000./populationPerCCAA[ccaa])
@@ -66,20 +70,8 @@ relativeSocisPerCCAA = dict(
     )
 
 def mapColor(value, minValue, maxValue):
-    colors = [
-        '#EE0',
-        '#DD0',
-        '#CC0',
-        '#BB0',
-        '#AA0',
-        '#990',
-        '#880',
-        '#770',
-        '#660',
-        ] + [
-        '#440',
-        ]*15
-    return colors[int((len(colors)-1)*(value-minValue)/(maxValue-minValue))]
+    ncolors = len(colors)-1
+    return colors[min(ncolors, int(ncolors*(value-minValue)/(maxValue-minValue)))]
 
 
 totalSocis = sum(value for value in socisPerCCAA.values())
@@ -98,7 +90,7 @@ output = ns(
 
 step("Generant mapa amb valors absoluts")
 
-maxSocis = max(value for value in socisPerCCAA.values())
+maxSocis = max(value for value in socisPerCCAA.values()) and 1800
 minSocis = min(value for value in socisPerCCAA.values())
 for ccaa, population in populationPerCCAA.items():
     socis = socisPerCCAA.get(ccaa,0)
@@ -109,7 +101,7 @@ renderMap('SocisPerCCAA-absoluts.svg', output)
 
 step("Generant mapa amb valors relatius")
 
-maxRelativeSocis = max(value for value in relativeSocisPerCCAA.values())
+maxRelativeSocis = max(value for value in relativeSocisPerCCAA.values()) and 10.
 minRelativeSocis = min(value for value in relativeSocisPerCCAA.values())
 
 for ccaa, population in populationPerCCAA.items():
