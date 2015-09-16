@@ -9,25 +9,42 @@ from consolemsg import step, error, fail, warn
 from namespace import namespace as ns
 
 
-step("Loading {}...".format(sys.argv[1]))
-with open(sys.argv[1]) as sqlfile:
-    query = sqlfile.read()
+def main():
+    cliargs = ns()
+    keyarg = None
+    args = []
+    for arg in sys.argv[1:]:
+        if keyarg:
+            cliargs[keyarg]=arg
+            continue
+        if arg.startswith('--'):
+            keyarg = arg[2:]
+            continue
+        args.append(arg)
 
-variables = ns()
-if len(sys.argv)>=3:
-    step("Loading variables...".format(sys.argv[2]))
-    variables = ns.load(sys.argv[2])
-    warn(variables.dump())
+    if not args:
+        fail()
+    warn(cliargs.dump())
+    step("Loading {}...".format(args[0]))
+    with open(args[0]) as sqlfile:
+        query = sqlfile.read()
 
-step("Connecting to the database...")
-db = psycopg2.connect(**config.psycopg)
+    variables = ns()
+    if len(args)>=2:
+        step("Loading variables...".format(args[1]))
+        variables = ns.load(args[1])
+        warn(variables.dump())
+    variables.update(cliargs)
 
-with db.cursor() as cursor :
-    cursor.execute(query, variables)
-    print dbutils.csvTable(cursor)
+    step("Connecting to the database...")
+    db = psycopg2.connect(**config.psycopg)
+
+    with db.cursor() as cursor :
+        cursor.execute(query, variables)
+        print dbutils.csvTable(cursor)
 
 
-
+main()
 
 
 
