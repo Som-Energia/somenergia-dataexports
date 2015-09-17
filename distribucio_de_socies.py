@@ -95,7 +95,9 @@ ORDER BY
 
 if __name__ == '__main__':
     import dbutils
-    print distribucioSocies(date=sys.argv[1], dbhandler=dbutils.csvTable)
+    import datetime
+    date = sys.argv[1] if len(sys.argv)>1 else str(datetime.date.today())
+    print distribucioSocies(date=date, dbhandler=dbutils.csvTable)
 
 
 
