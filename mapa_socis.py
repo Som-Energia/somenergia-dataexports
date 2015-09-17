@@ -69,7 +69,7 @@ def generateMaps(year, month, day=1):
         for line in readCsvNs('poblacio_ccaa.csv')
         )
 
-    distribucioSocis = readCsvNs("distribucio.csv")
+#    distribucioSocis = readCsvNs("distribucio.csv")
     distribucioSocis = distribucioSocies(str(date), dbutils.nsList)
 
     socisPerCCAA = countBy('codi_ccaa', distribucioSocis, noneValue='00')
