@@ -679,4 +679,27 @@
        sodipodi:rx="46.875"
        sodipodi:ry="19.866072"
        d="m 616.07141,369.83035 a 46.875,19.866072 0 1 1 -93.75,0 46.875,19.866072 0 1 1 93.75,0 z"
-       transform="translate(-36.003,6)" /></g></svg>
+       transform="translate(-36.003,6)" />
+<text
+   sodipodi:linespacing="125%"
+   id="text2952"
+   y="67.399826"
+   x="509.84473"
+   style="font-size:4px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+   xml:space="preserve"><tspan
+     style="font-size:11px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Sans;-inkscape-font-specification:Sans Bold"
+     y="67.399826"
+     x="509.84473"
+     sodipodi:role="line"
+     id="tspan2960">{titol}</tspan><tspan
+     style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;font-family:Sans;-inkscape-font-specification:Sans"
+     y="78.047676"
+     x="509.84473"
+     sodipodi:role="line"
+     id="tspan2938">{subtitol}</tspan><tspan
+     style="font-size:11px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Sans;-inkscape-font-specification:Sans Bold"
+     y="88.047676"
+     x="509.84473"
+     sodipodi:role="line"
+     id="tspan2935" /></text>
+</g></svg>

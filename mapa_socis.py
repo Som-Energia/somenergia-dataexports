@@ -99,6 +99,9 @@ def generateMaps(year, month, day=1):
 
     step("Generant mapa amb valors absoluts")
 
+    output.titol = ""
+    output.subtitol = ""
+
     maxSocis = max(value for value in socisPerCCAA.values()) and 1800
     minSocis = min(value for value in socisPerCCAA.values())
     for ccaa, population in populationPerCCAA.items():
@@ -109,6 +112,9 @@ def generateMaps(year, month, day=1):
     renderMap('SocisPerCCAA-absoluts-'+str(date), output)
 
     step("Generant mapa amb valors relatius")
+
+    output.titol = "Socixs/10.000 hab."
+    output.subtitol = "             (datos INE 01/2014)"
 
     maxRelativeSocis = max(value for value in relativeSocisPerCCAA.values()) and 10.
     minRelativeSocis = min(value for value in relativeSocisPerCCAA.values())

@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 class namespace(dict) :
-	"""A dictionary that whose values can be accessed as attributes
+	"""A dictionary whose values can be accessed as attributes
 	and can be loaded and dumped as YAML."""
 
 	def __init__(self, *args, **kwd) :
