@@ -5,7 +5,7 @@ ok() {
     rm -f "$result"
 }
 ko() {
-    echo -e '\033[31mKO\033[0m' See $1
+    echo -e '\033[31mKO See '$1'\033[0m'
 }
 step() {
     echo -e '\033[34;1m:: '$*'\033[0m'
