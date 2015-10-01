@@ -50,6 +50,9 @@ def renderMap(filename, data):
     with open(filename+'.svg','w') as svgAbsolut:
         svgAbsolut.write(svgcontent)
 
+    import subprocess
+    subprocess.call(["inkscape", filename+'.svg', '-e', filename+'.png', '--export-dpi', '200'])
+
 
 def mapColor(value, minValue, maxValue):
     with open('scale.csv') as scalecsv:
@@ -58,11 +61,15 @@ def mapColor(value, minValue, maxValue):
     ncolors = len(colors)-1
     return colors[min(ncolors, int(ncolors*(value-minValue)/(maxValue-minValue)))]
 
-def generateMaps(year, month, day=1):
+def generateMaps(year, month):
     import datetime
     import dbutils
 
-    date = datetime.date(year, month, day)
+    beginingNextMonth = (
+        datetime.date(year, month+1, 1)
+        if month != 12 else 
+        datetime.date(year+1, 1, 1)
+        )
 
     populationPerCCAA = dict(
         (line.code, int(line.population_2014_01))
@@ -70,7 +77,7 @@ def generateMaps(year, month, day=1):
         )
 
 #    distribucioSocis = readCsvNs("distribucio.csv")
-    distribucioSocis = distribucioSocies(str(date), dbutils.nsList)
+    distribucioSocis = distribucioSocies(str(beginingNextMonth), dbutils.nsList)
 
     socisPerCCAA = countBy('codi_ccaa', distribucioSocis, noneValue='00')
     socisPerProvincia = countBy('codi_provincia', distribucioSocis, noneValue='00')
@@ -88,12 +95,12 @@ def generateMaps(year, month, day=1):
 
     months = (
         "Enero Febrero Marzo Abril Mayo Junio "
-        "Julio Septiembre Octubre Noviembre Diciembre"
+        "Julio Agosto Septiembre Octubre Noviembre Diciembre"
         ).split()
 
 
     output = ns(
-        month = months[month-1],
+        month = months[month-1].upper(),
         year = year,
         )
 
@@ -107,9 +114,9 @@ def generateMaps(year, month, day=1):
     for ccaa, population in populationPerCCAA.items():
         socis = socisPerCCAA.get(ccaa,0)
         output['number_'+ccaa] = socis
-        output['percent_'+ccaa] = '{:.2f}%'.format(socis*100./totalSocis)
+        output['percent_'+ccaa] = '{:.1f}%'.format(socis*100./totalSocis).replace('.',',')
         output['color_'+ccaa] = mapColor(socis, minSocis, maxSocis)
-    renderMap('SocisPerCCAA-absoluts-'+str(date), output)
+    renderMap('SocisPerCCAA-absoluts-{:04}-{:02}'.format(year,month), output)
 
     step("Generant mapa amb valors relatius")
 
@@ -121,14 +128,18 @@ def generateMaps(year, month, day=1):
 
     for ccaa, population in populationPerCCAA.items():
         relativeSoci = relativeSocisPerCCAA.get(ccaa,0)
-        output['number_'+ccaa] = '{:.2f}'.format(relativeSoci)
+        output['number_'+ccaa] = '{:.1f}'.format(relativeSoci).replace('.',',')
         output['color_'+ccaa] = mapColor(
             relativeSoci, minRelativeSocis, maxRelativeSocis)
         output['percent_'+ccaa] = ''
-    renderMap('SocisPerCCAA-relatius-'+str(date), output)
+    renderMap('SocisPerCCAA-relatius-{:04}-{:02}'.format(year,month), output)
 
- 
-generateMaps(int(sys.argv[1]), int(sys.argv[2]))
+
+if __name__ == '__main__':
+    year = int(sys.argv[1])
+    month = int(sys.argv[2])
+        
+    generateMaps(year, month)
 
 
 
