@@ -25,7 +25,8 @@ SELECT
     m.ine AS codi_ine,
     prov.code AS codi_provincia,
     ccaa.codi AS codi_ccaa,
-    country.code AS codi_pais
+    country.code AS codi_pais,
+    dades_inicials.partner_id AS partner_id
 FROM res_partner_address AS pa
 JOIN (
     SELECT
@@ -53,7 +54,7 @@ WHERE
 ORDER BY p.ref
 """
 
-def distribucioSocies(date, dbhandler):
+def distribucioSocies(date, dbhandler, debug=False):
 
 
     db = psycopg2.connect(**config.psycopg)
@@ -69,6 +70,7 @@ SELECT
     codi_ine,
     municipi,
     COUNT(soci_id) AS quants
+    """ + ( ", STRING_AGG(num_soci::text, ',' ORDER BY partner_id DESC) AS partners" if debug else "") + """
 FROM ("""+subquerySocis+""") AS detall
 GROUP BY
     codi_pais,
@@ -96,8 +98,12 @@ ORDER BY
 if __name__ == '__main__':
     import dbutils
     import datetime
+    debug = False
+    if '--debug' in sys.argv:
+        sys.argv.remove('--debug')
+        debug = True
     date = sys.argv[1] if len(sys.argv)>1 else str(datetime.date.today())
-    print distribucioSocies(date=date, dbhandler=dbutils.csvTable)
+    print distribucioSocies(date=date, dbhandler=dbutils.csvTable, debug=debug)
 
 
 
