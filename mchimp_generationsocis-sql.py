@@ -7,6 +7,7 @@ import dbutils
 import codecs
 import sys
 from consolemsg import step, error, fail, warn
+from namespace import namespace as ns
 
 def esPersonaFisica(soci) :
     return 0 if soci.nif[2] in "ABCDEFGHJNPQRSUVW" else 1
@@ -28,6 +29,7 @@ with db.cursor() as cursor :
             ncontractes,
             email,
             already_invested IS NOT NULL AS already_invested,
+            ARRAY[8] @> categories AS essoci,
             FALSE
         FROM (
             SELECT DISTINCT ON (sub.soci_id)
@@ -39,6 +41,7 @@ with db.cursor() as cursor :
                 sub.consumannual AS consumannual,
                 sub.ncontractes AS ncontractes,
                 address.email,
+                categories,
                 FALSE
             FROM (
                 SELECT
@@ -49,6 +52,7 @@ with db.cursor() as cursor :
                     soci.lang AS lang,
                     SUM(cups.conany_kwh) AS consumannual,
                     COUNT(cups.conany_kwh) AS ncontractes,
+                    ARRAY_AGG(cat.category_id) as categories,
                     FALSE
                 FROM res_partner AS soci
                 LEFT JOIN
@@ -59,9 +63,9 @@ with db.cursor() as cursor :
                 LEFT JOIN 
                     giscedata_cups_ps AS cups ON cups.id = pol.cups
                 LEFT JOIN
-                    res_partner_category_rel AS cat ON cat.partner_id = soci.id
+                    res_partner_category_rel AS cat ON
+                    cat.partner_id = soci.id
                 WHERE
-                    cat.category_id = 8 AND
                     soci.active AND
                     pol.active AND
                     pol.state = 'activa' AND
@@ -88,6 +92,7 @@ with db.cursor() as cursor :
                 sub.consumannual,
                 sub.ncontractes,
                 address.email,
+                categories,
                 TRUE
         ) AS result
         LEFT JOIN (
@@ -128,6 +133,7 @@ with db.cursor() as cursor :
         'Already invested',
         'Unknown use',
         'Small use',
+        'Is Partner',
         ])
 
 
@@ -151,7 +157,6 @@ with db.cursor() as cursor :
             recommendedShares = (totalUse*recommendedPercent/100) // shareUse
             recommendedInvestment = recommendedShares * shareCost
 
-                    
             print '\t'.join(
                     str(x)
                         .replace('\t',' ')
@@ -174,7 +179,8 @@ with db.cursor() as cursor :
                 1 if line.already_invested else 0,
                 1 if totalUse is None else 0,
                 1 if totalUse * recommendedPercent < shareUse * 100 else 0,
-                ])
+                1 if line.essoci else 0 
+            ])
         except Exception as e:
             import traceback
             error("Error processant soci {}\n{}\n{}".format(
@@ -182,6 +188,7 @@ with db.cursor() as cursor :
                 e,
                 "\n".join(traceback.format_stack()),
                 )) 
+            error(ns(cas=line).dump())
 
 
 
