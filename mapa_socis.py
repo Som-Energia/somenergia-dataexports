@@ -75,6 +75,10 @@ def generateMaps(year, month):
         (line.code, int(line.population_2014_01))
         for line in readCsvNs('poblacio_ccaa.csv')
         )
+    populationPerProvincia = dict(
+        (line.code, int(line.population_2015_01))
+        for line in readCsvNs('poblacio_provincies-20150101.csv')
+        )
 
 #    distribucioSocis = readCsvNs("distribucio.csv")
     distribucioSocis = distribucioSocies(str(beginingNextMonth), dbutils.nsList)
