@@ -41,8 +41,8 @@ def countBy(column, data, noneValue=None) :
         result[keyValue] = previousCount + int(line.quants)
     return result
 
-def renderMap(filename, data):
-    with open("MapaSocios-template.svg") as svgTemplateFile:
+def renderMap(filename, data, template="MapaSocios-template.svg"):
+    with open(template) as svgTemplateFile:
         svgTemplate = svgTemplateFile.read()
 
     svgcontent = svgTemplate.format(**data)
@@ -55,7 +55,7 @@ def renderMap(filename, data):
 
 
 def mapColor(value, minValue, maxValue):
-    with open('scale.csv') as scalecsv:
+    with open('scale-somenergia.csv') as scalecsv:
         colors = [ color.strip() for color in scalecsv ]
 
     ncolors = len(colors)-1
@@ -91,6 +91,12 @@ def generateMaps(year, month):
     relativeSocisPerCCAA = dict(
         (ccaa, socis*10000./populationPerCCAA[ccaa])
         for ccaa, socis in socisPerCCAA.items()
+        )
+
+    relativeSocisPerProvincia = dict(
+        (prov, socis*10000./populationPerProvincia[prov])
+        for prov, socis in socisPerProvincia.items()
+	if prov in populationPerProvincia
         )
 
 
@@ -137,6 +143,39 @@ def generateMaps(year, month):
             relativeSoci, minRelativeSocis, maxRelativeSocis)
         output['percent_'+ccaa] = ''
     renderMap('SocisPerCCAA-relatius-{:04}-{:02}'.format(year,month), output)
+
+
+    output = ns(
+        month = months[month-1].upper(),
+        year = year,
+        )
+    step("Generant mapa per provincies amb valors absoluts")
+
+    maxSocis = max(value for value in socisPerProvincia.values()) and 1800
+    minSocis = min(value for value in socisPerProvincia.values())
+    for prov, population in populationPerProvincia.items():
+        socis = socisPerProvincia.get(prov,0)
+        output['number_'+prov] = socis
+        output['percent_'+prov] = '{:.1f}%'.format(socis*100./totalSocis).replace('.',',')
+        output['color_'+prov] = mapColor(socis, minSocis, maxSocis)
+    renderMap('SocisPerProvincies-absoluts-{:04}-{:02}'.format(year,month), output, 'MapaProvincias-template.svg')
+
+    step("Generant mapa per provincies amb valors relatius")
+
+    output.titol = "Socixs/10.000 hab."
+    output.subtitol = "             (datos INE 01/2015)"
+
+    maxRelativeSocis = max(value for value in relativeSocisPerProvincia.values()) and 10.
+    minRelativeSocis = min(value for value in relativeSocisPerProvincia.values())
+
+    for prov, population in populationPerProvincia.items():
+        relativeSoci = relativeSocisPerProvincia.get(prov,0)
+        output['number_'+prov] = '{:.1f}'.format(relativeSoci).replace('.',',')
+        output['color_'+prov] = mapColor(
+            relativeSoci, minRelativeSocis, maxRelativeSocis)
+        output['percent_'+prov] = ''
+    renderMap('SocisPerProvincies-relatius-{:04}-{:02}'.format(year,month), output, 'MapaProvincias-template.svg')
+
 
 
 if __name__ == '__main__':
