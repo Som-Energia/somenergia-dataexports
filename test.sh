@@ -11,16 +11,16 @@ step() {
     echo -e '\033[34;1m:: '$*'\033[0m'
 } 
 
-for data in 2015-02-01 2014-12-01 2014-11-01;
+for data in 2015-01-31 2014-11-30 2014-10-31;
 do
-    result=b2bdata/pere-$data-result.csv
+    result=b2bdata/aggregated-$data-result.csv
     expect=${result/result.csv/expected.csv}
     step Running ./sql2csv.py distribucio_de_socies.sql --data "${data}"
     rm -f "$result"
     ./sql2csv.py distribucio_de_socies.sql --data "${data}" > "$result" 2>&1 && diff "$expect" "$result" && ok "$result" || ko "$result"
 done
 
-for data in 2015-02-01 2014-12-01 2014-11-01;
+for data in 2015-01-31 2014-11-30 2014-10-31;
 do
     result=b2bdata/distribucio-$data-result.csv
     expect=${result/result.csv/expected.csv}
