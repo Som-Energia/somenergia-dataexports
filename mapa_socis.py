@@ -55,7 +55,7 @@ def renderMap(filename, data, template="MapaSocios-template.svg"):
 
 
 def mapColor(value, minValue, maxValue):
-    with open('scale-somenergia.csv') as scalecsv:
+    with open('scale-classic.csv') as scalecsv:
         colors = [ color.strip() for color in scalecsv ]
 
     ncolors = len(colors)-1
@@ -69,7 +69,7 @@ def generateMaps(year, month):
         datetime.date(year, month+1, 1)
         if month != 12 else 
         datetime.date(year+1, 1, 1)
-        )
+        ) - datetime.timedelta(days=1)
 
     populationPerCCAA = dict(
         (line.code, int(line.population_2014_01))

@@ -40,7 +40,7 @@ FROM(
 
 	WHERE adreces.partner_id IS NOT NULL
 		AND category.category_id = 8
-		AND adreces.create_date < %(data)s
+		AND adreces.create_date <= %(data)s
     ) AS taula_provincia
 GROUP BY provincia, comunitat_autonoma
 ORDER BY comunitat_autonoma, provincia
@@ -83,7 +83,7 @@ FROM(
 
 	WHERE adreces.partner_id IS NOT NULL
 		AND category.category_id = 8
-		AND adreces.create_date < %(data)s
+		AND adreces.create_date <= %(data)s
     ) as taula_comunitat_autonoma
 GROUP BY comunitat_autonoma
 ORDER BY taula_comunitat_autonoma.comunitat_autonoma)
@@ -121,7 +121,7 @@ FROM(
 
 	WHERE adreces.partner_id IS NOT NULL
 		AND category.category_id = 8
-		AND adreces.create_date < %(data)s
+		AND adreces.create_date <= %(data)s
 		AND comunitat.name != 'Cataluña'
     ) AS taula_comarca
 WHERE comarca IS NOT NULL
@@ -160,7 +160,7 @@ FROM(
 
 	WHERE adreces.partner_id IS NOT NULL
 		AND category.category_id = 8
-		AND adreces.create_date < %(data)s
+		AND adreces.create_date <= %(data)s
 		AND pais.name != 'España'
 		) as taula_pais
 GROUP BY pais
