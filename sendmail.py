@@ -96,14 +96,19 @@ def sendMail(
 
 
 def main():
-    import glob
     import sys
 
     args = parseArgs()
     print args
 
-    content = {}
-    content[args.format] = sys.stdin.read()
+    if args.body is not None:
+        content = args.body
+    elif args.bodyfile is not None:
+        with open(args.bodyfile) as f:
+            content = f.read()
+    else:
+        content = sys.stdin.read()
+
     print content
 
     sendMail(
@@ -115,29 +120,9 @@ def main():
         replyto = args.replyto,
         attachments = args.attachments,
         template = args.template,
-        **content)
-
-    return
-
-    sendMail(
-        sender = 'sistemes@somenergia.coop',
-        subject = 'Prova html amb head i comment',
-        recipients = [
-            'david.garcia@somenergia.coop',
-            ],
-        bcc = [
-            'david.garcia@guifibaix.coop',
-            ],
-        replyto = [
-            'david.garcia@guifibaix.coop',
-            ],
-        md = """\
-Queridos reyes _magos_,
-
-Me he portado **fatal**
-""",
-        attachments= glob.glob("*.svg")[:4],
+        **{args.format: content}
         )
+
 
 def parseArgs():
     import argparse
