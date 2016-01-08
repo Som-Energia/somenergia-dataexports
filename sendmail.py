@@ -1,8 +1,9 @@
 #!/usr/bin/env python
+# -*- encoding: utf8 -*-
 
 from consolemsg import step
 
-htmltemplate = """\
+mdtemplate = u"""\
 <html>
 <head>
 <style>
@@ -20,6 +21,25 @@ strong {{
 </html>
 """
 
+ansitemplate = u"""\
+<html>
+<head>
+<style>
+{style}
+</style>
+</head>
+<body>
+<div class='ansi_terminal'>
+{body}
+</div>
+</body>
+</html>
+"""
+
+def _unicode(string):
+     if hasattr(str, 'decode'):
+         return string.decode('utf8')
+     return string
 
 
 def sendMail(
@@ -29,6 +49,7 @@ def sendMail(
         text=None,
         html=None,
         md=None,
+        ansi=None,
         cc=[],
         bcc=[],
         replyto=[],
@@ -38,10 +59,10 @@ def sendMail(
         ):
 
     import smtplib
-    from email.MIMEMultipart import MIMEMultipart
-    from email.MIMEBase import MIMEBase
-    from email.MIMEText import MIMEText
-    from email import Encoders
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.base import MIMEBase
+    from email.mime.text import MIMEText
+    from email.encoders import encode_base64
 
     from config import smtp
 
@@ -58,7 +79,7 @@ def sendMail(
         step("Attaching {}...".format(filename))
         part = MIMEBase('application', "octet-stream")
         part.set_payload(open(filename, "rb").read())
-        Encoders.encode_base64(part)
+        encode_base64(part)
 
         part.add_header(
             'Content-Disposition',
@@ -67,21 +88,30 @@ def sendMail(
         msg.attach(part)
 
     if md:
-        import premailer
         import markdown
-        text = md
-        html = premailer.transform(
-            htmltemplate.format(
-                markdown.markdown(md, output_format='html')
-            ))
+        text = md # TODO: Format plain text
+        html = mdtemplate.format(
+            markdown.markdown(md, output_format='html')
+            )
+
+    if ansi:
+        import deansi
+        text = ansi # TODO: Clean ansi sequences
+        html = ansitemplate.format(
+            style = deansi.styleSheet(),
+            body = deansi.deansi(ansi),
+            )
+
 
     content = MIMEMultipart('alternative')
 
     if text:
-        content.attach(MIMEText(text,'plain'))
+        content.attach(MIMEText(text,'plain','utf8'))
 
     if html:
-        content.attach(MIMEText(html,'html'))
+        import premailer
+        html = premailer.transform(html)
+        content.attach(MIMEText(html,'html','utf8'))
 
     msg.attach(content)
 
@@ -99,17 +129,16 @@ def main():
     import sys
 
     args = parseArgs()
-    print args
 
     if args.body is not None:
         content = args.body
     elif args.bodyfile is not None:
         with open(args.bodyfile) as f:
-            content = f.read()
+            content = _unicode(f.read())
     else:
-        content = sys.stdin.read()
+        content = _unicode(sys.stdin.read())
 
-    print content
+    sys.stdout.write(content)
 
     sendMail(
         sender = args.sender,
@@ -186,12 +215,12 @@ def parseArgs():
 
     parser.add_argument(
         '--format',
-        choices = "html md text".split(),
+        choices = "html md text ansi".split(),
         default = 'text',
         metavar='FORMAT',
         help="Format for the body. "
             "'md' takes markdown and generates both html and text. "
-#            "'ansi' does the same, turning ANSI color codes in html or stripping them for text."
+            "'ansi' does the same, turning ANSI color codes in html or stripping them for text."
             ,
         )
 
