@@ -75,7 +75,7 @@ def sendMail(
     if bcc: msg['BCC'] = ', '.join(bcc)
     if replyto: msg['Reply-To'] = ', '.join(replyto)
 
-    recipients = recipients + (cc if cc else []) + (bcc if bcc else []
+    recipients = recipients + (cc if cc else []) + (bcc if bcc else [])
 
     for filename in attachments:
         step("Attaching {}...".format(filename))
