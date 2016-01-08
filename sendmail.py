@@ -67,13 +67,15 @@ def sendMail(
     from config import smtp
 
     msg = MIMEMultipart()
-    msg['Subject'] = subject 
+    msg['Subject'] = subject
+    # TODO: check address format
     msg['From'] = sender
     msg['To'] = ', '.join(recipients)
     if cc: msg['CC'] = ', '.join(cc)
     if bcc: msg['BCC'] = ', '.join(bcc)
     if replyto: msg['Reply-To'] = ', '.join(replyto)
 
+    recipients = recipients + (cc if cc else []) + (bcc if bcc else []
 
     for filename in attachments:
         step("Attaching {}...".format(filename))
