@@ -88,6 +88,7 @@ def sendMail(
         msg.attach(part)
 
     if md:
+        step("Formating markdown input...")
         import markdown
         text = md # TODO: Format plain text
         html = mdtemplate.format(
@@ -95,6 +96,7 @@ def sendMail(
             )
 
     if ansi:
+        step("Formating ansi input...")
         import deansi
         text = ansi # TODO: Clean ansi sequences
         html = ansitemplate.format(
@@ -109,6 +111,7 @@ def sendMail(
         content.attach(MIMEText(text,'plain','utf8'))
 
     if html:
+        step("Adapting html to mail clients...")
         import premailer
         html = premailer.transform(html)
         content.attach(MIMEText(html,'html','utf8'))
