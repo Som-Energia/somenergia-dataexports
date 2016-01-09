@@ -1,40 +1,27 @@
 #!/usr/bin/env python
 # -*- encoding: utf8 -*-
 
-from consolemsg import step
-
-mdtemplate = u"""\
-<html>
-<head>
-<style>
-em {{
-    color: red;
-}}
-strong {{
-    color: green;
-}}
-</style>
-</head>
-<body>
-{}
-</body>
-</html>
+"""
+TODO:
+- Check address format
+- Format markdown as nice text
+- 
 """
 
-ansitemplate = u"""\
+htmltemplate = u"""\
 <html>
+<meta charset="utf-8" />
 <head>
 <style>
 {style}
 </style>
 </head>
 <body>
-<div class='ansi_terminal'>
 {body}
-</div>
 </body>
 </html>
 """
+
 
 def _unicode(string):
      if hasattr(str, 'decode'):
@@ -44,7 +31,7 @@ def _unicode(string):
 
 def sendMail(
         sender,
-        recipients,
+        to,
         subject,
         text=None,
         html=None,
@@ -55,7 +42,8 @@ def sendMail(
         replyto=[],
         attachments = [],
         template=None,
-        params = {},
+	stylesheets = None,
+	verbose=True
         ):
 
     import smtplib
@@ -64,18 +52,28 @@ def sendMail(
     from email.mime.text import MIMEText
     from email.encoders import encode_base64
 
+    try:
+        from consolemsg import step
+    except ImportError:
+        import sys
+        step = lambda msg: sys.stderr.write(":: "+msg+'\n')
+
     from config import smtp
+
+    # Headers
 
     msg = MIMEMultipart()
     msg['Subject'] = subject
     # TODO: check address format
     msg['From'] = sender
-    msg['To'] = ', '.join(recipients)
+    msg['To'] = ', '.join(to)
     if cc: msg['CC'] = ', '.join(cc)
     if bcc: msg['BCC'] = ', '.join(bcc)
     if replyto: msg['Reply-To'] = ', '.join(replyto)
 
-    recipients = recipients + (cc if cc else []) + (bcc if bcc else [])
+    recipients = to + (cc if cc else []) + (bcc if bcc else [])
+
+    # Attachments
 
     for filename in attachments:
         step("Attaching {}...".format(filename))
@@ -89,23 +87,30 @@ def sendMail(
 
         msg.attach(part)
 
+    # Content formatting
+
+    style=''
+    for stylesheet in stylesheets:
+        with open(stylesheet) as stylefile:
+            style+=stylefile.read()
+
     if md:
         step("Formating markdown input...")
         import markdown
         text = md # TODO: Format plain text
-        html = mdtemplate.format(
-            markdown.markdown(md, output_format='html')
+        html = htmltemplate.format(
+            style = style,
+            body = markdown.markdown(md, output_format='html')
             )
 
     if ansi:
         step("Formating ansi input...")
         import deansi
         text = ansi # TODO: Clean ansi sequences
-        html = ansitemplate.format(
-            style = deansi.styleSheet(),
-            body = deansi.deansi(ansi),
+        html = htmltemplate.format(
+            style = deansi.styleSheet()+style,
+            body = "<div class='ansi_terminal'>"+deansi.deansi(ansi)+"</div>",
             )
-
 
     content = MIMEMultipart('alternative')
 
@@ -118,7 +123,12 @@ def sendMail(
         html = premailer.transform(html)
         content.attach(MIMEText(html,'html','utf8'))
 
+    import sys
+    sys.stdout.write(html)
+
     msg.attach(content)
+
+    # Sending
 
     step("Connecting to {host}:{port} as {user}...".format(**smtp))
     server = smtplib.SMTP(smtp['host'], smtp['port'])
@@ -128,6 +138,106 @@ def sendMail(
     server.sendmail(sender, recipients, msg.as_string())
     step("Disconnecting...")
     server.quit()
+
+
+
+def parseArgs():
+    import argparse
+    parser = argparse.ArgumentParser(
+        description="Sends an email.",
+        )
+    parser.add_argument(
+        '-f',
+        '--from',
+        required=True,
+        dest='sender',
+        help="Message sender ('From:' header)",
+        )
+    parser.add_argument(
+        '-s',
+        '--subject',
+        required=True,
+        dest='subject',
+        help="Message subject ('Subject:' header)",
+        )
+    parser.add_argument(
+        '-t',
+        '--to',
+        dest='to',
+        required=True,
+        metavar='recipient',
+        action='append',
+        help="Message recipient ('To:' header) (multiple)",
+        )
+
+    parser.add_argument(
+        '--body',
+        metavar="TEXT",
+        help="Message body (defaults to stdin)",
+        )
+
+    parser.add_argument(
+        '--bodyfile',
+        metavar="BODYFILE",
+        help="File containing the message body (defaults to stdin)",
+        )
+
+    parser.add_argument(
+        '-c',
+        '--cc',
+        dest='cc',
+        action='append',
+        help="Message copy recipient ('CC:' header) (multiple)",
+        )
+
+    parser.add_argument(
+        '-b',
+        '--bcc',
+        dest='bcc',
+        action='append',
+        help="Message hidden copy recipient ('BCC:' header) (multiple), other recipients won't see this header",
+        )
+
+    parser.add_argument(
+        '-r',
+        '--replyto',
+        dest='replyto',
+        action='append',
+        help="Default address to reply at ('Reply-To:' header) (multiple)",
+        )
+
+    parser.add_argument(
+        '--format',
+        choices = "html md text ansi".split(),
+        default = 'text',
+        metavar='FORMAT',
+        help="Format for the body. "
+            "'md' takes markdown and generates both html and text. "
+            "'ansi' does the same, turning ANSI color codes in html or stripping them for text."
+            ,
+        )
+
+    parser.add_argument(
+        '--style',
+        metavar='CSSFILE',
+	action='append',
+        help="Style sheet for the html output, (multiple)",
+        )
+
+    parser.add_argument(
+        '--template',
+        help="Alternative template for the html body.",
+        )
+
+    parser.add_argument(
+        dest='attachments',
+        metavar="FILE",
+        nargs='*',
+        help="File to attach",
+        )
+
+    args = parser.parse_args()
+    return args
 
 
 def main():
@@ -147,102 +257,16 @@ def main():
 
     sendMail(
         sender = args.sender,
-        recipients = args.recipients,
+        to = args.to,
         subject = args.subject,
         cc = args.cc,
         bcc = args.bcc,
         replyto = args.replyto,
         attachments = args.attachments,
         template = args.template,
+        stylesheets = args.style,
         **{args.format: content}
         )
-
-
-def parseArgs():
-    import argparse
-    parser = argparse.ArgumentParser(
-        description="Sends an email.",
-        )
-    parser.add_argument(
-        '--from',
-        required=True,
-        dest='sender',
-        help="Message sender ('From:' header)",
-        )
-    parser.add_argument(
-        '-s',
-        '--subject',
-        required=True,
-        dest='subject',
-        help="Message subject ('Subject:' header)",
-        )
-    parser.add_argument(
-        '--to',
-        dest='recipients',
-        required=True,
-        metavar='recipient',
-        action='append',
-        help="Message recipient ('To:' header)",
-        )
-
-    parser.add_argument(
-        '--body',
-        metavar="TEXT",
-        help="Message body (defaults to stdin)",
-        )
-
-    parser.add_argument(
-        '--bodyfile',
-        metavar="BODYFILE",
-        help="File containing the message body (defaults to stdin)",
-        )
-
-    parser.add_argument(
-        '--cc',
-        dest='cc',
-        action='append',
-        help="Message copy recipient ('CC:' header)",
-        )
-
-    parser.add_argument(
-        '--bcc',
-        dest='bcc',
-        action='append',
-        help="Message hidden copy recipient ('BCC:' header), recipients won't see this copy",
-        )
-
-    parser.add_argument(
-        '--replyto',
-        dest='replyto',
-        action='append',
-        help="Default address to reply at ('Reply-To:' header)",
-        )
-
-    parser.add_argument(
-        '--format',
-        choices = "html md text ansi".split(),
-        default = 'text',
-        metavar='FORMAT',
-        help="Format for the body. "
-            "'md' takes markdown and generates both html and text. "
-            "'ansi' does the same, turning ANSI color codes in html or stripping them for text."
-            ,
-        )
-
-    parser.add_argument(
-        '--template',
-        help="Alternative template for the html body.",
-        )
-
-    parser.add_argument(
-        dest='attachments',
-        metavar="FILE",
-        nargs='*',
-        help="File to attach",
-        )
-
-    args = parser.parse_args()
-    return args
 
 
 if __name__ == '__main__':
