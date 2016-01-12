@@ -8,21 +8,24 @@ def localfile(file):
 
 from pip.req import parse_requirements
 
-with open(localfile('README')) as readmefile:
+with open(localfile('README.rst')) as readmefile:
     readme = readmefile.read()
 
 setup(
-    name = "scripts",
+    name = "somenergia-dataexports",
     version = "0.1",
-    description = "",
+    description = "Scripts to export data and reports from SomEnergia ERP",
     author = "SomEnergia",
     author_email = "tic@somenergia.coop",
-    url = 'https://github.com/Som-Energia/',
+    url = 'https://github.com/Som-Energia/somenergia-dataexports',
     long_description = readme,
     license = 'GNU General Public License v3 or later (GPLv3+)',
-    packages=[
+    py_modules=[
+        'sql2csv',
     ],
     scripts=[
+        'mapa_socis',
+        'distribucio_de_socies',
         'mchimp_generationsocis.py',
     ],
     install_requires=[
