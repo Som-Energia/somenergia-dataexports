@@ -24,9 +24,11 @@ lastMonthEnd=$(date -I -d "$year-$month-01 - 1 day") # last day of last month
 IFS='-' read -r year month day <<< "${1:-$lastMonthEnd}" # split date
 
 step "Generating reports at $year-$month-$day"
-
+step "  Generant mapes"
 ./mapa_socis.py $year $month || die
+step "  Generant dades detallades"
 ./distribucio_de_socies.py "$year-$month-$day" > distribucion-socias-$year-$month-$day-detalle.csv || die
+step "  Generant dades aggregades"
 ./sql2csv.py distribucio_de_socies.sql --data "$year-$month-$day" > distribucion-socias-$year-$month-$day-agregado.csv || die
 
 step "Sending results..."
@@ -44,18 +46,15 @@ Datos:
 
 Mapas:
 
-- png (rasterizado) i svg (vectorial editable)
-- Per CCAA i Per Provincies
-- relatius a la poblacio i en nombres absoluts
+- En formatos png y svg (vectorial editable)
+- Por CCAA y por províncias
+- Relativos a la poblacio y en números absolutos
 
-
-[Más información]
-
-[Más información]:http://somenergia.coop
+**Aviso:** El mapa de províncias no está suficiente pulido para su publicación.
 
 "
 
-./sendmail.py \
+emili.py \
     --subject "Distribución socixs $year-$month-$day" \
     $TOOPTIONS \
     --from sistemes@somenergia.coop \
