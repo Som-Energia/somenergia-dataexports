@@ -42,7 +42,7 @@ def sendMail(
         replyto=[],
         attachments = [],
         template=None,
-	stylesheets = None,
+	stylesheets = [],
 	verbose=True
         ):
 
@@ -90,7 +90,7 @@ def sendMail(
     # Content formatting
 
     style=''
-    for stylesheet in stylesheets:
+    for stylesheet in stylesheets or []:
         with open(stylesheet) as stylefile:
             style+=stylefile.read()
 
@@ -123,8 +123,8 @@ def sendMail(
         html = premailer.transform(html)
         content.attach(MIMEText(html,'html','utf8'))
 
-    import sys
-    sys.stdout.write(html)
+        import sys
+        sys.stdout.write(html)
 
     msg.attach(content)
 
@@ -246,8 +246,9 @@ def main():
     args = parseArgs()
 
     if args.body is not None:
-        content = args.body
+        content = _unicode(args.body)
     elif args.bodyfile is not None:
+        step("Loading body from stdin...")
         with open(args.bodyfile) as f:
             content = _unicode(f.read())
     else:
