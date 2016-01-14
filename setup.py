@@ -26,7 +26,7 @@ setup(
     scripts=[
         'mapa_socis',
         'distribucio_de_socies',
-        'mchimp_generationsocis.py',
+        'mchimp_generationsocis',
     ],
     install_requires=[
         str(req.req)
