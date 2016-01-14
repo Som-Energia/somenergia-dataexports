@@ -51,7 +51,8 @@ def renderMap(filename, data, template="MapaSocios-template.svg"):
         svgAbsolut.write(svgcontent)
 
     import subprocess
-    subprocess.call(["inkscape", filename+'.svg', '-e', filename+'.png', '--export-dpi', '200'])
+#    subprocess.call(["inkscape", filename+'.svg', '-e', filename+'.png', '--export-dpi', '200'])
+    subprocess.call(["convert", '-density', '200', filename+'.svg', filename+'.png'])
 
 
 def mapColor(value, minValue, maxValue):
