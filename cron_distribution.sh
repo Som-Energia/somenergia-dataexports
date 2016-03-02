@@ -7,6 +7,8 @@ step() {
     echo -e '\033[34;1m:: '$*'\033[0m'
 }
 
+scriptpath=$(dirname $(realpath "$0"))
+cd "$scriptpath"
  
 TOOPTIONS=$(
 while read r
@@ -14,6 +16,7 @@ do
     [ -n "$r" ] &&  echo "--to $r"
 done < recipients-distribucio
 )
+date
 
 
 today=$(date -I)
@@ -60,6 +63,7 @@ emili.py \
     --from sistemes@somenergia.coop \
     --cc david.garcia@somenergia.coop \
     --replyto david.garcia@somenergia.coop \
+    --config $scriptpath/config.py \
     --format md \
     --style somenergia.css \
     "distribucion-socias-$year-$month-$day-detalle.csv" \
