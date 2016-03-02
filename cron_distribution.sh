@@ -61,7 +61,6 @@ emili.py \
     --subject "Distribución socixs $year-$month-$day" \
     $TOOPTIONS \
     --from sistemes@somenergia.coop \
-    --cc david.garcia@somenergia.coop \
     --replyto david.garcia@somenergia.coop \
     --config $scriptpath/config.py \
     --format md \
