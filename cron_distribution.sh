@@ -7,7 +7,7 @@ step() {
     echo -e '\033[34;1m:: '$*'\033[0m'
 }
 
-scriptpath=$(dirname $(realpath "$0"))
+scriptpath=$(dirname $(readlink -f "$0"))
 cd "$scriptpath"
  
 TOOPTIONS=$(
