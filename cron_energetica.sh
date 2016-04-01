@@ -14,7 +14,7 @@ TOOPTIONS=$(
 while read r
 do
     [ -n "$r" ] &&  echo "--to $r"
-done < recipients-distribucio
+done < recipients-energetica
 )
 date
 
