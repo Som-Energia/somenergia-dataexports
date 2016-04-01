@@ -51,7 +51,7 @@ Mapas:
 
 - En formatos png y svg (vectorial editable)
 - Por CCAA y por províncias
-- Relativos a la poblacio y en números absolutos
+- Relativos a la población y en números absolutos
 
 **Aviso:** El mapa de províncias no está suficiente pulido para su publicación.
 
