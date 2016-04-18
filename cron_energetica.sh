@@ -25,7 +25,7 @@ lastMonthEnd=$(date -I -d "$year-$month-01 - 1 day") # last day of last month
 IFS='-' read -r year month day <<< "${1:-$lastMonthEnd}" # split date
 
 step "Generant resum del $year-$month-$day"
-./sql2csv.py resum_energeticacoop.sql > resumen-contratos-energeticacoop-$year-$month-${day}.csv || die
+sql2csv.py resum_energeticacoop.sql > resumen-contratos-energeticacoop-$year-$month-${day}.csv || die
 
 step "Enviant resultats..."
 

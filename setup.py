@@ -21,12 +21,11 @@ setup(
     long_description = readme,
     license = 'GNU General Public License v3 or later (GPLv3+)',
     py_modules=[
-        'sql2csv',
     ],
     scripts=[
-        'mapa_socis',
-        'distribucio_de_socies',
-        'mchimp_generationsocis',
+        'mapa_socis.py',
+        'distribucio_de_socies.py',
+        'mchimp_generationsocis.py',
     ],
     install_requires=[
         str(req.req)

@@ -15,9 +15,9 @@ for data in 2015-01-31 2014-11-30 2014-10-31;
 do
     result=b2bdata/aggregated-$data-result.csv
     expect=${result/result.csv/expected.csv}
-    step Running ./sql2csv.py distribucio_de_socies.sql --data "${data}"
+    step Running sql2csv.py distribucio_de_socies.sql --data "${data}"
     rm -f "$result"
-    ./sql2csv.py distribucio_de_socies.sql --data "${data}" > "$result" 2>&1 && diff "$expect" "$result" && ok "$result" || ko "$result"
+    sql2csv.py distribucio_de_socies.sql --data "${data}" > "$result" 2>&1 && diff "$expect" "$result" && ok "$result" || ko "$result"
 done
 
 for data in 2015-01-31 2014-11-30 2014-10-31;
