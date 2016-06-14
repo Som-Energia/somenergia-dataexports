@@ -14,9 +14,10 @@ select  pais.code as codi_pais,
 	left join res_country_state provincia on provincia.id = municipi.state
 	LEFT JOIN res_comunitat_autonoma AS comunitat ON comunitat.id = provincia.comunitat_autonoma
 	left join res_country as pais on pais.id = provincia.country_id
-where (polissa.data_baixa >= %(date)s 
-        or polissa.data_baixa is null) and 
+where polissa.data_alta >= %(date)s and 
     polissa.data_alta <= %(date_end)s and
+    not (polissa.data_baixa IS NOT NULL and polissa.data_baixa >= %(date)s and
+        polissa.data_baixa <= %(date_end)s) and
 	TRUE
 GROUP BY
 	codi_pais,
