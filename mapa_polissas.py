@@ -12,7 +12,7 @@ from mapa_socis import *
 import sys
 
 
-def generateMaps(year, month, endyear, endmonth):
+def generateMaps(year, month):
     import datetime
     import dbutils
 
@@ -20,12 +20,6 @@ def generateMaps(year, month, endyear, endmonth):
         datetime.date(year, month+1, 1)
         if month != 12 else 
         datetime.date(year+1, 1, 1)
-        ) - datetime.timedelta(days=1)
-    
-    beginingNextEndMonth = (
-        datetime.date(endyear, endmonth+1, 1)
-        if endmonth != 12 else 
-        datetime.date(endyear+1, 1, 1)
         ) - datetime.timedelta(days=1)
     
     populationPerCCAA = dict(
@@ -38,7 +32,7 @@ def generateMaps(year, month, endyear, endmonth):
         )
 
 #    distribucioPolissas = readCsvNs("distribucio.csv")
-    distribucioPolissa = distribucioPolissas(str(beginingNextMonth),str(beginingNextEndMonth), dbutils.nsList)
+    distribucioPolissa = distribucioPolissas(str(beginingNextMonth), dbutils.nsList)
 
     socisPerCCAA = countBy('codi_ccaa', distribucioPolissa, noneValue='00')
     socisPerProvincia = countBy('codi_provincia', distribucioPolissa, noneValue='00')
@@ -69,8 +63,6 @@ def generateMaps(year, month, endyear, endmonth):
     output = ns(
         month = months[month-1].upper(),
         year = year,
-        endmonth = months[endmonth-1].upper(),
-        endyear = endyear,
         )
 
     step("Generant mapa amb valors absoluts")
@@ -85,7 +77,7 @@ def generateMaps(year, month, endyear, endmonth):
         output['number_'+ccaa] = socis
         output['percent_'+ccaa] = '{:.1f}%'.format(socis*100./totalPolissas).replace('.',',')
         output['color_'+ccaa] = mapColor(socis, minPolissas, maxPolissas)
-    renderMap('PolissasPerCCAA-absoluts-{:04}-{:02}'.format(year,month), output,'MapaContratos-template.svg')
+    renderMap('PolissasPerCCAA-absoluts-{:04}-{:02}'.format(year,month), output)
 
     step("Generant mapa amb valors relatius")
 
@@ -101,7 +93,7 @@ def generateMaps(year, month, endyear, endmonth):
         output['color_'+ccaa] = mapColor(
             relativeSoci, minRelativePolissas, maxRelativePolissas)
         output['percent_'+ccaa] = ''
-    renderMap('PolissasPerCCAA-relatius-{:04}-{:02}'.format(year,month), output,'MapaContratos-template.svg')
+    renderMap('PolissasPerCCAA-relatius-{:04}-{:02}'.format(year,month), output)
 
 
     output = ns(
@@ -140,9 +132,7 @@ def generateMaps(year, month, endyear, endmonth):
 if __name__ == '__main__':
     year = int(sys.argv[1])
     month = int(sys.argv[2])
-    end_year = int(sys.argv[3])
-    end_month = int(sys.argv[4])
-    generateMaps(year, month, end_year, end_month)
+    generateMaps(year, month)
 
 
 
