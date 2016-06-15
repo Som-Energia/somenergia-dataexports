@@ -12,3 +12,7 @@ testcases:
         command: sql2csv.py distribucio_de_polissas.sql --date 2011-10-01 > b2bdata/distribucio_de_polissas_2011_10_01.csv
         outputs:
             - b2bdata/distribucio_de_polissas_2011_10_01.csv
+    polissas_case_2011_10_31:
+        command: sql2csv.py distribucio_de_polissas.sql --date 2011-10-31 > b2bdata/distribucio_de_polissas_2011_10_31.csv
+        outputs:
+            - b2bdata/distribucio_de_polissas_2011_10_31.csv
