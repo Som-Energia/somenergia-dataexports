@@ -129,7 +129,7 @@ def generateMaps(year, month, itemFunction, itemName):
         output['number_'+ccaa] = items
         output['percent_'+ccaa] = '{:.1f}%'.format(items*100./totalItems).replace('.',',')
         output['color_'+ccaa] = mapColor(items, minItems, maxItems)
-    renderMap('{}PerCCAA-absoluts-{:04}-{:02}'.format(itemName,year,month), output)
+    renderMap('Mapa-distribución-{}-{:04}-{:02}-31'.format(itemName,year,month), output)
 
     step("Generant mapa amb valors relatius")
 
@@ -145,7 +145,7 @@ def generateMaps(year, month, itemFunction, itemName):
         output['color_'+ccaa] = mapColor(
             relativeItem, minRelativeItems, maxRelativeItems)
         output['percent_'+ccaa] = ''
-    renderMap('{}-PerCCAA-relatius-{:04}-{:02}'.format(itemName,year,month), output)
+    renderMap('Mapa-distribución-{}-pob-{:04}-{:02}'.format(itemName,year,month), output)
 
 
     output = ns(
@@ -184,5 +184,5 @@ def generateMaps(year, month, itemFunction, itemName):
 if __name__ == '__main__':
     year = int(sys.argv[1])
     month = int(sys.argv[2])
-    generateMaps(year, month, distribucioSocies, "socios")
-    generateMaps(year, month, distribucioPolissas, "Contratos")
+    generateMaps(year, month, distribucioSocies, "socixs")
+    generateMaps(year, month, distribucioPolissas, "contratos")
