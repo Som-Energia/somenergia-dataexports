@@ -28,19 +28,21 @@ IFS='-' read -r year month day <<< "${1:-$lastMonthEnd}" # split date
 
 step "Generating reports at $year-$month-$day"
 step "  Generant mapes"
-./mapa_socis.py $year $month || die
+./mapa.py $year $month || die
 step "  Generant dades detallades"
 ./distribucio_de_socies.py "$year-$month-$day" > distribucion-socias-$year-$month-$day-detalle.csv || die
+./distribucio_de_polissas.py "$year-$month-$day" > distribucion-contratos-$year-$month-$day-detalle.csv || die
 step "  Generant dades aggregades"
 sql2csv.py distribucio_de_socies.sql --data "$year-$month-$day" > distribucion-socias-$year-$month-$day-agregado.csv || die
+sql2csv.py distribucio_de_polissas.sql --date "$year-$month-$day" > distribucion-contratos-$year-$month-$day-agregado.csv || die
 
 step "Sending results..."
 
 TEXTOK="
-# Distribución de socixs ($year-$month-$day)
+# Distribución de socixs y contratos ($year-$month-$day)
 
 Se adjuntan los ficheros con los mapas y las hojas de cálculo de la
-**distribución de socixs** a dia **$year-$month-$day**.
+**distribución de socixs** y **distribución de contratos** a dia **$year-$month-$day**.
 
 Datos:
 
@@ -50,32 +52,41 @@ Datos:
 Mapas:
 
 - En formatos png y svg (vectorial editable)
-- Por CCAA y por províncias
+- Por CCAA y por provincias
 - Relativos a la población y en números absolutos
 
 **Aviso:** El mapa de províncias no está suficiente pulido para su publicación.
 
+
 "
 
 emili.py \
-    --subject "Distribución socixs $year-$month-$day" \
-    $TOOPTIONS \
-    --from sistemes@somenergia.coop \
-    --replyto david.garcia@somenergia.coop \
-    --config $scriptpath/config.py \
-    --format md \
-    --style somenergia.css \
-    "distribucion-socias-$year-$month-$day-detalle.csv" \
-    "distribucion-socias-$year-$month-$day-agregado.csv" \
-    "SocisPerCCAA-absoluts-$year-$month.svg" \
-    "SocisPerCCAA-absoluts-$year-$month.png" \
-    "SocisPerCCAA-relatius-$year-$month.svg" \
-    "SocisPerCCAA-relatius-$year-$month.png" \
-    "SocisPerProvincies-absoluts-$year-$month.svg" \
-    "SocisPerProvincies-absoluts-$year-$month.png" \
-    "SocisPerProvincies-relatius-$year-$month.svg" \
-    "SocisPerProvincies-relatius-$year-$month.png" \
-    --body "$TEXTOK" \
-    || die
-
-
+ --subject "Distribución socixs y contratos $year-$month-$day" \
+ $TOOPTIONS \
+ --from sistemes@somenergia.coop \
+ --replyto david.garcia@somenergia.coop \
+ --config $scriptpath/config.py \
+ --format md \
+ --style somenergia.css \
+ "distribucion-socias-$year-$month-$day-detalle.csv" \
+ "distribucion-socias-$year-$month-$day-agregado.csv" \
+ "distribucion-polissas-$year-$month-$day-detalle.csv" \
+ "distribucion-polissas-$year-$month-$day-agregado.csv" \
+ "Mapa-distribución-socixs-$year-$month.svg" \
+ "Mapa-distribución-socixs-$year-$month.png" \
+ "Mapa-distribución-socixs-pob-$year-$month.svg" \
+ "Mapa-distribución-socixs-pob-$year-$month.png" \
+ "Mapa-distribución-contratos-$year-$month.svg" \
+ "Mapa-distribución-contratos-$year-$month.png" \
+ "Mapa-distribución-contratos-pob-$year-$month.svg" \
+ "Mapa-distribución-contratos-pob-$year-$month.png" \
+ "Mapa-distribución-socixs-provincias-$year-$month.svg" \
+ "Mapa-distribución-socixs-provincias-$year-$month.png" \
+ "Mapa-distribución-socixs-provincias-pob-$year-$month.svg" \
+ "Mapa-distribución-socixs-provincias-pob-$year-$month.png" \
+ "Mapa-distribución-contratos-provincias-$year-$month.svg" \
+ "Mapa-distribución-contratos-provincias-$year-$month.png" \
+ "Mapa-distribución-contratos-provincias-pob-$year-$month.svg" \
+ "Mapa-distribución-contratos-provincias-pob-$year-$month.png" \
+ --body "$TEXTOK" \
+ || die

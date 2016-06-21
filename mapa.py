@@ -119,7 +119,7 @@ def generateMaps(year, month, itemFunction, itemName):
 
     step("Generant mapa amb valors absoluts")
 
-    output.titol = ""
+    output.titol = "{}".format(itemName.capitalize())
     output.subtitol = ""
 
     maxItems = max(value for value in itemsPerCCAA.values()) and 1800
@@ -129,7 +129,7 @@ def generateMaps(year, month, itemFunction, itemName):
         output['number_'+ccaa] = items
         output['percent_'+ccaa] = '{:.1f}%'.format(items*100./totalItems).replace('.',',')
         output['color_'+ccaa] = mapColor(items, minItems, maxItems)
-    renderMap('Mapa-distribución-{}-{:04}-{:02}-31'.format(itemName,year,month), output)
+    renderMap('Mapa-distribución-{}-{:04}-{:02}'.format(itemName,year,month), output)
 
     step("Generant mapa amb valors relatius")
 
@@ -152,6 +152,10 @@ def generateMaps(year, month, itemFunction, itemName):
         month = months[month-1].upper(),
         year = year,
         )
+    
+    output.titol = "{}".format(itemName.capitalize())
+    output.subtitol = ""
+    
     step("Generant mapa per provincies amb valors absoluts")
 
     maxItems = max(value for value in itemsPerProvincia.values()) and 1800
@@ -161,7 +165,7 @@ def generateMaps(year, month, itemFunction, itemName):
         output['number_'+prov] = items
         output['percent_'+prov] = '{:.1f}%'.format(items*100./totalItems).replace('.',',')
         output['color_'+prov] = mapColor(items, minItems, maxItems)
-    renderMap('{}-PerProvincies-absoluts-{:04}-{:02}'.format(itemName.capitalize(),year,month), output, 'MapaProvincias-template.svg')
+    renderMap('Mapa-distribución-{}-provincias-{:04}-{:02}'.format(itemName,year,month), output, 'MapaProvincias-template.svg')
 
     step("Generant mapa per provincies amb valors relatius")
 
@@ -177,7 +181,7 @@ def generateMaps(year, month, itemFunction, itemName):
         output['color_'+prov] = mapColor(
             relativeItem, minRelativeItems, maxRelativeItems)
         output['percent_'+prov] = ''
-    renderMap('{}-PerProvincies-relatius-{:04}-{:02}'.format(itemName.capitalize(),year,month), output, 'MapaProvincias-template.svg')
+    renderMap('Mapa-distribución-{}-provincias-pob-{:04}-{:02}'.format(itemName,year,month), output, 'MapaProvincias-template.svg')
 
 
 
