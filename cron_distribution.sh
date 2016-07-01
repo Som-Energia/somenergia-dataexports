@@ -70,8 +70,8 @@ emili.py \
  --style somenergia.css \
  "distribucion-socias-$year-$month-$day-detalle.csv" \
  "distribucion-socias-$year-$month-$day-agregado.csv" \
- "distribucion-polissas-$year-$month-$day-detalle.csv" \
- "distribucion-polissas-$year-$month-$day-agregado.csv" \
+ "distribucion-contratos-$year-$month-$day-detalle.csv" \
+ "distribucion-contratos-$year-$month-$day-agregado.csv" \
  "Mapa-distribución-socixs-$year-$month.svg" \
  "Mapa-distribución-socixs-$year-$month.png" \
  "Mapa-distribución-socixs-pob-$year-$month.svg" \
