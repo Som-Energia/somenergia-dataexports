@@ -19,13 +19,15 @@ def ambPuntDeMilers(numero) :
 db = psycopg2.connect(**config.psycopg)
 with db.cursor() as cursor :
     cursor.execute("""\
-        SELECT DISTINCT gi.id, rpa.email, rp.lang
+        SELECT DISTINCT MIN(gi.id) as id, rpa.email, MIN(rp.lang) as lang, MIN(gi.purchase_date) as data_compra
         FROM res_partner AS rp, res_partner_address AS rpa, somenergia_soci AS ss, generationkwh_investment as gi
         WHERE rp.id = rpa.partner_id AND
             rp.id = ss.partner_id AND
             ss.id = gi.member_id AND
-            gi.purchase_date <= '2015-09-15' AND
+            gi.purchase_date <= '2015-09-30' AND
             gi.active = True
+        GROUP BY rpa.email
+        ORDER BY data_compra
         ;
     """)
 
@@ -34,6 +36,7 @@ with db.cursor() as cursor :
         'id',
         'email',
         'lang',
+        'purchase_date',
         ])
 
 
@@ -50,20 +53,14 @@ with db.cursor() as cursor :
                 line.id,
                 line.email,
                 line.lang,
+                line.data_compra
             ])
         except Exception as e:
             import traceback
             error("Error processant soci {}\n{}\n{}".format(
-                line.nsoci,
+                line.id,
                 e,
                 "\n".join(traceback.format_stack()),
                 )) 
             error(ns(cas=line).dump())
-
-
-
-
-
-
-
 
