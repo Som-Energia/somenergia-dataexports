@@ -99,7 +99,7 @@ def generateMaps(year, month, itemFunction, itemName):
     relativeItemsPerProvincia = dict(
         (prov, items*10000./populationPerProvincia[prov])
         for prov, items in itemsPerProvincia.items()
-	if prov in populationPerProvincia
+        if prov in populationPerProvincia
         )
 
 
