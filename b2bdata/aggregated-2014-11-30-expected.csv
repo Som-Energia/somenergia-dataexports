@@ -4,75 +4,75 @@ tipus	nombre	recuento
 PROVINCE	Almería	43
 PROVINCE	Cádiz	43
 PROVINCE	Córdoba	88
-PROVINCE	Granada	88
-PROVINCE	Huelva	16
-PROVINCE	Jaen	12
+PROVINCE	Granada	89
+PROVINCE	Huelva	15
+PROVINCE	Jaen	13
 PROVINCE	Málaga	56
 PROVINCE	Sevilla	129
 PROVINCE	Huesca	99
-PROVINCE	Teruel	26
-PROVINCE	Zaragoza	427
-PROVINCE	Asturias	66
-PROVINCE	Balears, Illes	959
+PROVINCE	Teruel	25
+PROVINCE	Zaragoza	430
+PROVINCE	Asturias	67
+PROVINCE	Balears, Illes	955
 PROVINCE	Las Palmas	29
-PROVINCE	Santa Cruz de Tenerife	23
+PROVINCE	Santa Cruz de Tenerife	24
 PROVINCE	Cantabria	51
 PROVINCE	Albacete	52
-PROVINCE	Ciudad Real	26
+PROVINCE	Ciudad Real	25
 PROVINCE	Cuenca	33
-PROVINCE	Guadalajara	38
-PROVINCE	Toledo	60
-PROVINCE	Avila	19
-PROVINCE	Burgos	62
-PROVINCE	León	33
-PROVINCE	Palencia	15
-PROVINCE	Salamanca	28
+PROVINCE	Guadalajara	35
+PROVINCE	Toledo	58
+PROVINCE	Avila	20
+PROVINCE	Burgos	61
+PROVINCE	León	32
+PROVINCE	Palencia	16
+PROVINCE	Salamanca	27
 PROVINCE	Segovia	12
-PROVINCE	Soria	14
-PROVINCE	Valladolid	55
-PROVINCE	Zamora	5
-PROVINCE	Barcelona	7902
-PROVINCE	Girona	1269
+PROVINCE	Soria	13
+PROVINCE	Valladolid	53
+PROVINCE	Zamora	4
+PROVINCE	Barcelona	7871
+PROVINCE	Girona	1265
 PROVINCE	Lleida	446
-PROVINCE	Tarragona	553
-PROVINCE	Alacant	269
-PROVINCE	Castelló	198
-PROVINCE	València	981
+PROVINCE	Tarragona	548
+PROVINCE	Alacant	268
+PROVINCE	Castelló	201
+PROVINCE	València	979
 PROVINCE	Badajoz	34
 PROVINCE	Cáceres	19
-PROVINCE	A Coruña	123
-PROVINCE	Lugo	29
-PROVINCE	Ourense	12
+PROVINCE	A Coruña	119
+PROVINCE	Lugo	30
+PROVINCE	Ourense	13
 PROVINCE	Pontevedra	66
-PROVINCE	Madrid	1448
+PROVINCE	Madrid	1445
 PROVINCE	Melilla	1
-PROVINCE	Murcia	129
-PROVINCE	Navarra	560
-PROVINCE	Araba	50
+PROVINCE	Murcia	123
+PROVINCE	Navarra	559
+PROVINCE	Araba	49
 PROVINCE	Bizkaia	192
-PROVINCE	Gipuzkoa	77
-PROVINCE	La Rioja	137
+PROVINCE	Gipuzkoa	76
+PROVINCE	La Rioja	139
 PROVINCE	None	0
-STATE	Andalucia	475
-STATE	Aragón	552
-STATE	Asturias, Principado de	66
-STATE	Baleares, Islas	959
-STATE	Canarias	52
+STATE	Andalucia	476
+STATE	Aragón	554
+STATE	Asturias, Principado de	67
+STATE	Baleares, Islas	955
+STATE	Canarias	53
 STATE	Cantabria	51
-STATE	Castilla - La Mancha	209
-STATE	Castilla y León	243
-STATE	Cataluña	10170
+STATE	Castilla - La Mancha	203
+STATE	Castilla y León	238
+STATE	Cataluña	10130
 STATE	Comunidad Valenciana	1448
 STATE	Extremadura	53
-STATE	Galicia	230
-STATE	Madrid, Comunidad de	1448
+STATE	Galicia	228
+STATE	Madrid, Comunidad de	1445
 STATE	Melilla	1
-STATE	Murcia, Región de	129
-STATE	Navarra, Comunidad Foral de	560
-STATE	País Vasco	319
-STATE	Rioja, La	137
+STATE	Murcia, Región de	123
+STATE	Navarra, Comunidad Foral de	559
+STATE	País Vasco	317
+STATE	Rioja, La	139
 STATE	None	0
-COUNTY	Mallorca	758
+COUNTY	Mallorca	754
 COUNTY	Menorca	132
 COUNTY	Pitiüses	69
 COUNTY	Fuerteventura	1
@@ -80,9 +80,10 @@ COUNTY	Gomera (La)	1
 COUNTY	Gran Canaria	26
 COUNTY	Lanzarote	2
 COUNTY	Palma (La)	1
-COUNTY	Tenerife	21
-COUNTRY	France	1
+COUNTY	Tenerife	22
+COUNTRY	Chile	1
+COUNTRY	France	2
 COUNTRY	Germany	2
 COUNTRY	Netherlands	3
 COUNTRY	Portugal	1
-COUNTRY	United Kingdom	1
+COUNTRY	United Kingdom	2
