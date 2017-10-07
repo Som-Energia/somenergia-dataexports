@@ -33,8 +33,8 @@ step "  Generant dades detallades"
 ./distribucio_de_socies.py "$year-$month-$day" > distribucion-socias-$year-$month-$day-detalle.csv || die
 ./distribucio_de_polissas.py "$year-$month-$day" > distribucion-contratos-$year-$month-$day-detalle.csv || die
 step "  Generant dades aggregades"
-sql2csv.py distribucio_de_socies.sql --data "$year-$month-$day" > distribucion-socias-$year-$month-$day-agregado.csv || die
-sql2csv.py distribucio_de_polissas_aggregated.sql --date "$year-$month-$day" > distribucion-contratos-$year-$month-$day-agregado.csv || die
+sql2csv.py -C config.py distribucio_de_socies.sql --data "$year-$month-$day" > distribucion-socias-$year-$month-$day-agregado.csv || die
+sql2csv.py -C config.py distribucio_de_polissas_aggregated.sql --date "$year-$month-$day" > distribucion-contratos-$year-$month-$day-agregado.csv || die
 
 step "Sending results..."
 
