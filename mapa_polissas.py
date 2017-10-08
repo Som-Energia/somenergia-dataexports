@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #-*- coding: utf8 -*-
 
-from namespace import namespace as ns
+from yamlns import namespace as ns
 import math
 from consolemsg import step
 

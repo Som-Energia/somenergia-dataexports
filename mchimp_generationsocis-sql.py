@@ -7,7 +7,7 @@ import dbutils
 import codecs
 import sys
 from consolemsg import step, error, fail, warn
-from namespace import namespace as ns
+from yamlns import namespace as ns
 
 def esPersonaFisica(soci) :
     return 0 if soci.nif[2] in "ABCDEFGHJNPQRSUVW" else 1
