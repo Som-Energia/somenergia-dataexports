@@ -38,6 +38,41 @@ do
     ./distribucio_de_socies.py "${data}" > "$result" 2>&1 && diff "$expect" "$result" && ok "$result" || ko "$result"
 done
 
+function allmaps() {
+	year=$1
+	month=$2
+	for subject in socixs contratos
+	do
+		for ambit in '' '-pob' '-provincias' '-provincias-pob'
+		do
+			echo "Mapa-distribución-$subject$ambit-$year-$month"
+		done
+	done
+}
+
+year=2015
+month=04
+step Running ./mapa.py ${year} ${month}
+allmaps $year $month | while read map
+do
+	rm -f "./$map.svg"
+	rm -f "./$map.png"
+done
+./mapa.py $year $month || ko "generacio de mapes"
+
+allmaps $year $month | while read map
+do
+	result=b2bdata/$map-result.svg
+	expect=${result/result.svg/expected.svg}
+	mv "$map".svg "$result"
+	diff "$expect" "$result" && ok "$result" || ko "$result"
+done
+allmaps $year $month | while read map
+do
+	rm -f "./$map.png"
+done
+
+
 #./mchimp_generationsocis-sql.py >res 2>reserr; diff ref res && diff referr reserr && ok || ko
 
 
