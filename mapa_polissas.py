@@ -21,7 +21,7 @@ def generateMaps(year, month):
         if month != 12 else 
         datetime.date(year+1, 1, 1)
         ) - datetime.timedelta(days=1)
-    
+
     populationPerCCAA = dict(
         (line.code, int(line.population_2014_01))
         for line in readCsvNs('poblacio_ccaa.csv')
@@ -47,7 +47,7 @@ def generateMaps(year, month):
     relativePolissasPerProvincia = dict(
         (prov, socis*10000./populationPerProvincia[prov])
         for prov, socis in socisPerProvincia.items()
-	if prov in populationPerProvincia
+        if prov in populationPerProvincia
         )
 
 

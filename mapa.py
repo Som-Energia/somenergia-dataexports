@@ -10,7 +10,6 @@ from distribucio_de_polissas import distribucioPolissas
 
 import sys
 
-
 def readCsvTable(filename):
     """Reads a tab separated csv file as an array of
     arrays"""
@@ -190,3 +189,7 @@ if __name__ == '__main__':
     month = int(sys.argv[2])
     generateMaps(year, month, distribucioSocies, "socixs")
     generateMaps(year, month, distribucioPolissas, "contratos")
+
+
+
+

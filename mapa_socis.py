@@ -97,7 +97,7 @@ def generateMaps(year, month):
     relativeSocisPerProvincia = dict(
         (prov, socis*10000./populationPerProvincia[prov])
         for prov, socis in socisPerProvincia.items()
-	if prov in populationPerProvincia
+        if prov in populationPerProvincia
         )
 
 
@@ -182,9 +182,7 @@ def generateMaps(year, month):
 if __name__ == '__main__':
     year = int(sys.argv[1])
     month = int(sys.argv[2])
-        
     generateMaps(year, month)
-
 
 
 
