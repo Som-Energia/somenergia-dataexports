@@ -30,7 +30,7 @@ setup(
     ],
     install_requires=[
         str(req.req)
-        for req in parse_requirements(localfile('requirements.txt'))
+        for req in parse_requirements(localfile('requirements.txt'), session=False)
     ],
     test_suite='nose2.collector.collector',
     classifiers = [
