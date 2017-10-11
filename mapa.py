@@ -182,8 +182,8 @@ def generateMaps(year, month, itemFunction, itemName):
 
 
 if __name__ == '__main__':
-	from distribucio_de_socies import distribucioSocies
-	from distribucio_de_polissas import distribucioPolissas
+    from distribucio_de_socies import distribucioSocies
+    from distribucio_de_polissas import distribucioPolissas
 
     year = int(sys.argv[1])
     month = int(sys.argv[2])
