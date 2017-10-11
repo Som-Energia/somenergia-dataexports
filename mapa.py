@@ -5,9 +5,6 @@ from yamlns import namespace as ns
 import math
 from consolemsg import step
 
-from distribucio_de_socies import distribucioSocies
-from distribucio_de_polissas import distribucioPolissas
-
 import sys
 
 def readCsvTable(filename):
@@ -185,6 +182,9 @@ def generateMaps(year, month, itemFunction, itemName):
 
 
 if __name__ == '__main__':
+	from distribucio_de_socies import distribucioSocies
+	from distribucio_de_polissas import distribucioPolissas
+
     year = int(sys.argv[1])
     month = int(sys.argv[2])
     generateMaps(year, month, distribucioSocies, "socixs")
