@@ -23,7 +23,7 @@ setup(
     py_modules=[
     ],
     scripts=[
-        'mapa_socis.py',
+        'mapa.py',
         'distribucio_de_socies.py',
         'distribucio_de_polissas.py',
         'mchimp_generationsocis.py',
