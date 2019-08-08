@@ -35,6 +35,7 @@ step "  Generant dades detallades"
 step "  Generant dades aggregades"
 sql2csv.py -C config.py distribucio_de_socies.sql --date "$year-$month-$day" > distribucion-socias-$year-$month-$day-agregado.csv || die
 sql2csv.py -C config.py distribucio_de_polissas_aggregated.sql --date "$year-$month-$day" > distribucion-contratos-$year-$month-$day-agregado.csv || die
+python sort-csv.py --f distribucion-socias-$year-$month-$day-agregado.csv --s order.txt --tab --c 3 --e exclude.txt --o sorted-distribucion-socias-$year-$month-$day-agregado.csv
 
 step "Sending results..."
 
@@ -70,6 +71,7 @@ emili.py \
  --style somenergia.css \
  "distribucion-socias-$year-$month-$day-detalle.csv" \
  "distribucion-socias-$year-$month-$day-agregado.csv" \
+ "sorted-distribucion-socias-$year-$month-$day-agregado.csv" \
  "distribucion-contratos-$year-$month-$day-detalle.csv" \
  "distribucion-contratos-$year-$month-$day-agregado.csv" \
  "Mapa-distribución-socixs-$year-$month.svg" \
