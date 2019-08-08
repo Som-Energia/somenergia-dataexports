@@ -1,87 +1,87 @@
 [34;1m:: Loading distribucio_de_socies.sql...[0m
+[32;1m>> configuration to connect to erp at http://localhost[0m
 [34;1m:: Connecting to the database...[0m
 tipus	nombre	recuento
-PROVINCE	Almería	42
-PROVINCE	Cádiz	41
-PROVINCE	Córdoba	84
+PROVINCE	Almería	43
+PROVINCE	Cádiz	40
+PROVINCE	Córdoba	85
 PROVINCE	Granada	87
 PROVINCE	Huelva	14
-PROVINCE	Jaen	13
-PROVINCE	Málaga	53
+PROVINCE	Jaén	11
+PROVINCE	Málaga	51
 PROVINCE	Sevilla	127
-PROVINCE	Huesca	97
+PROVINCE	Huesca	99
 PROVINCE	Teruel	25
-PROVINCE	Zaragoza	419
-PROVINCE	Asturias	67
-PROVINCE	Balears, Illes	919
-PROVINCE	Las Palmas	25
-PROVINCE	Santa Cruz de Tenerife	22
-PROVINCE	Cantabria	50
-PROVINCE	Albacete	49
-PROVINCE	Ciudad Real	25
-PROVINCE	Cuenca	33
-PROVINCE	Guadalajara	34
-PROVINCE	Toledo	58
-PROVINCE	Avila	20
+PROVINCE	Zaragoza	415
+PROVINCE	Asturias	68
+PROVINCE	Balears, Illes	910
+PROVINCE	Palmas, Las	24
+PROVINCE	Santa Cruz de Tenerife	21
+PROVINCE	Cantabria	48
+PROVINCE	Albacete	48
+PROVINCE	Ciudad Real	23
+PROVINCE	Cuenca	32
+PROVINCE	Guadalajara	36
+PROVINCE	Toledo	57
+PROVINCE	Ávila	21
 PROVINCE	Burgos	59
 PROVINCE	León	32
-PROVINCE	Palencia	16
-PROVINCE	Salamanca	26
-PROVINCE	Segovia	12
+PROVINCE	Palencia	14
+PROVINCE	Salamanca	27
+PROVINCE	Segovia	13
 PROVINCE	Soria	13
 PROVINCE	Valladolid	49
 PROVINCE	Zamora	4
-PROVINCE	Barcelona	7640
-PROVINCE	Girona	1243
-PROVINCE	Lleida	434
-PROVINCE	Tarragona	538
-PROVINCE	Alacant	258
-PROVINCE	Castelló	196
-PROVINCE	València	939
-PROVINCE	Badajoz	31
+PROVINCE	Barcelona	7612
+PROVINCE	Girona	1245
+PROVINCE	Lleida	436
+PROVINCE	Tarragona	537
+PROVINCE	Alicante/Alacant	257
+PROVINCE	Castellón/Castelló	189
+PROVINCE	Valencia/València	927
+PROVINCE	Badajoz	29
 PROVINCE	Cáceres	18
-PROVINCE	A Coruña	116
+PROVINCE	Coruña, A	116
 PROVINCE	Lugo	29
 PROVINCE	Ourense	12
-PROVINCE	Pontevedra	64
-PROVINCE	Madrid	1386
+PROVINCE	Pontevedra	62
+PROVINCE	Madrid	1360
 PROVINCE	Melilla	1
-PROVINCE	Murcia	119
-PROVINCE	Navarra	544
-PROVINCE	Araba	47
+PROVINCE	Murcia	112
+PROVINCE	Navarra	542
+PROVINCE	Araba/Álava	45
 PROVINCE	Bizkaia	185
-PROVINCE	Gipuzkoa	73
-PROVINCE	La Rioja	137
+PROVINCE	Gipuzkoa	70
+PROVINCE	Rioja, La	135
 PROVINCE	None	0
-STATE	Andalucia	461
-STATE	Aragón	541
-STATE	Asturias, Principado de	67
-STATE	Baleares, Islas	919
-STATE	Canarias	47
-STATE	Cantabria	50
-STATE	Castilla - La Mancha	199
-STATE	Castilla y León	231
-STATE	Cataluña	9855
-STATE	Comunidad Valenciana	1393
-STATE	Extremadura	49
-STATE	Galicia	221
-STATE	Madrid, Comunidad de	1386
+STATE	Andalucia	458
+STATE	Aragón	539
+STATE	Asturias, Principado de	68
+STATE	Baleares, Islas	910
+STATE	Canarias	45
+STATE	Cantabria	48
+STATE	Castilla - La Mancha	196
+STATE	Castilla y León	232
+STATE	Cataluña	9830
+STATE	Comunidad Valenciana	1373
+STATE	Extremadura	47
+STATE	Galicia	219
+STATE	Madrid, Comunidad de	1360
 STATE	Melilla	1
-STATE	Murcia, Región de	119
-STATE	Navarra, Comunidad Foral de	544
-STATE	País Vasco	305
-STATE	Rioja, La	137
+STATE	Murcia, Región de	112
+STATE	Navarra, Comunidad Foral de	542
+STATE	País Vasco	300
+STATE	Rioja, La	135
 STATE	None	0
-COUNTY	Mallorca	730
+COUNTY	Mallorca	721
 COUNTY	Menorca	127
 COUNTY	Pitiüses	62
 COUNTY	Fuerteventura	1
 COUNTY	Gomera (La)	1
-COUNTY	Gran Canaria	24
-COUNTY	Palma (La)	1
+COUNTY	Gran Canaria	23
 COUNTY	Tenerife	20
 COUNTRY	Chile	1
-COUNTRY	France	2
+COUNTRY	France	1
 COUNTRY	Germany	2
 COUNTRY	Netherlands	3
 COUNTRY	Portugal	1
