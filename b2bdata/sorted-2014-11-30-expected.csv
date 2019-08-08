@@ -1,0 +1,68 @@
+PROVINCE,Barcelona,7843
+PROVINCE,Girona,1268
+PROVINCE,Lleida,447
+PROVINCE,Tarragona,547
+STATE,Cataluña,10105
+COUNTY,Mallorca,746
+COUNTY,Menorca,132
+COUNTY,Pitiüses,69
+PROVINCE,"Balears, Illes",947
+PROVINCE,Navarra,557
+PROVINCE,Huesca,101
+PROVINCE,Teruel,25
+PROVINCE,Zaragoza,427
+STATE,Aragón,553
+PROVINCE,Madrid,1420
+PROVINCE,Alicante/Alacant,267
+PROVINCE,Castellón/Castelló,193
+PROVINCE,Valencia/València,966
+STATE,Comunidad Valenciana,1426
+PROVINCE,"Rioja, La",137
+PROVINCE,Almería,44
+PROVINCE,Cádiz,42
+PROVINCE,Córdoba,89
+PROVINCE,Granada,89
+PROVINCE,Huelva,15
+PROVINCE,Jaén,11
+PROVINCE,Málaga,54
+PROVINCE,Sevilla,129
+STATE,Andalucia,473
+PROVINCE,"Coruña, A",119
+PROVINCE,Lugo,31
+PROVINCE,Ourense,12
+PROVINCE,Pontevedra,64
+STATE,Galicia,226
+PROVINCE,Murcia,116
+PROVINCE,Albacete,51
+PROVINCE,Ciudad Real,23
+PROVINCE,Cuenca,32
+PROVINCE,Guadalajara,37
+PROVINCE,Toledo,57
+STATE,Castilla - La Mancha,200
+PROVINCE,Asturias,68
+PROVINCE,Cantabria,49
+PROVINCE,Araba/Álava,47
+PROVINCE,Bizkaia,192
+PROVINCE,Gipuzkoa,73
+STATE,País Vasco,312
+PROVINCE,Badajoz,31
+PROVINCE,Cáceres,19
+STATE,Extremadura,50
+PROVINCE,Ávila,21
+PROVINCE,Burgos,61
+PROVINCE,León,32
+PROVINCE,Palencia,14
+PROVINCE,Salamanca,28
+PROVINCE,Segovia,13
+PROVINCE,Soria,13
+PROVINCE,Valladolid,53
+PROVINCE,Zamora,4
+STATE,Castilla y León,239
+COUNTY,Fuerteventura,1
+COUNTY,Gomera (La),1
+COUNTY,Gran Canaria,25
+COUNTY,Lanzarote,2
+COUNTY,Tenerife,22
+STATE,Canarias,51
+PROVINCE,Melilla,1
+-,ALTRES,10

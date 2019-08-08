@@ -22,6 +22,16 @@ done
 
 for data in 2015-01-31 2014-11-30 2014-10-31;
 do
+    input=b2bdata/aggregated-$data-expected.csv
+    result=b2bdata/sorted-$data-result.csv
+    expect=${result/result.csv/expected.csv}
+    step Running sql2csv.py -C config.py distribucio_de_socies.sql --date "${data}"
+    rm -f "$result"
+    python sort-csv.py --f "$input" --s order.txt --tab --c 3 --e exclude.txt --o "$result" 2>&1 && diff "$expect" "$result" && ok "$result" || ko "$result"
+done
+
+for data in 2015-01-31 2014-11-30 2014-10-31;
+do
     result=b2bdata/aggregated-polisses-$data-result.csv
     expect=${result/result.csv/expected.csv}
     step Running sql2csv.py -C config.py distribucio_de_polissas.sql --date "${data}"
