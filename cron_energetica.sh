@@ -42,8 +42,6 @@ emili.py \
     --subject "Contratos EnergEtica, $year-$month-$day" \
     $TOOPTIONS \
     --from sistemes@somenergia.coop \
-    --replyto eduard.quintana@somenergia.coop \
-    --bcc itcrowd@somenergia.coop \
     --config $scriptpath/config.py \
     --format md \
     --style somenergia.css \
